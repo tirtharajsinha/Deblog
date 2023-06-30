@@ -1,0 +1,70 @@
+﻿@page
+@model LoginModel
+
+@{
+	ViewData["Title"] = "Auth in style";
+	Layout = "_AuthLayout";
+}
+
+<div class="container">
+	<a href="/" class="branding">
+		<img src="/images/logo.png" alt="">
+		<span>Deblog</span>
+	</a>
+	<div class="sidebanner halfdiv">
+
+		<div class="banner">
+			<img src="/images/illustration1.png" alt="">
+		</div>
+	</div>
+
+	<form method="post" class="form halfdiv">
+		<div class="formbox">
+			<h3>Sign in to Deblog</h3>
+			<div class="inpbox">
+				<i class="fal fa-at"></i>
+				<input asp-for="Input.Username" placeholder="Username" autocomplete="off" required>
+			</div>
+			<div class="inpbox">
+				<i class="fal fa-lock"></i>
+				<input asp-for="Input.Password" type="password" placeholder="Password" autocomplete="off" required>
+			</div>
+
+			<div class="input-group">
+				<input asp-for="Input.RememberMe" type="checkbox" id="checkbox" hidden />
+				<label for="checkbox" class="checkbox">
+					<span class="icon"></span><span class="text">
+						Remember
+						me
+					</span>
+				</label>
+			</div>
+
+			<div class="valbox" asp-validation-summary="All">
+			</div>
+
+			<div class="inpbox1 btnbox">
+				<input class="button" type="submit" value="SIGN IN">
+			</div>
+
+			<a id="forgot-password" asp-page="./ForgotPassword" class="inpbox2 fp"><i class="fal fa-unlock-alt"></i> Forgot Password? No worry.</a>
+
+			<a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl" class="inpbox2"><i class="fal fa-user-plus"></i> Create a new account.</a>
+
+			<div class="inpbox not-centered">
+				<img src="/images/google.png" alt="">
+				<input class="gbutton" type="submit" value="Sign In with Google">
+			</div>
+		</div>
+
+
+
+	</form>
+
+</div>
+
+
+
+@section Scripts {
+	<partial name="_ValidationScriptsPartial" />
+}

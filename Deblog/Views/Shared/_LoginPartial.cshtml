@@ -1,0 +1,32 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using Deblog.Areas.Identity.Data
+
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+
+@if (SignInManager.IsSignedIn(User))
+{
+	<a onclick="logout()"><span class="danger">Sign Out</span></a>
+	<a asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage" class="nav-active mse">@UserManager.GetUserName(User)</a>
+
+
+	<form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+		<button id="logout" type="submit" class="nav-link btn btn-link text-dark" hidden>Logout</button>
+	</form>
+
+}
+else
+{
+	<a id="login" asp-area="Identity" asp-page="/Account/Login" class="mse">Sign in</a>
+	<a id="register" asp-area="Identity" asp-page="/Account/Register" class="nav-active">Get Started</a>
+
+}
+
+
+<script>
+	function logout() {
+		document.getElementById("logout").click();
+	}
+
+</script>

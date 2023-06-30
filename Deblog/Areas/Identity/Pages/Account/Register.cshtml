@@ -1,0 +1,71 @@
+﻿@page
+@model RegisterModel
+
+@{
+	ViewData["Title"] = "SignUp in Style";
+	Layout = "_AuthLayout";
+}
+
+<div class="container">
+	<a href="/" class="branding">
+		<img src="/images/logo.png" alt="">
+		<span>Deblog</span>
+	</a>
+	<div class="sidebanner halfdiv">
+
+		<div class="banner">
+			<img src="/images/illustration2.png" alt="">
+		</div>
+	</div>
+
+	<form asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form halfdiv">
+		<div class="formbox">
+			<h3>Sign Up to Deblog</h3>
+
+			<div class="inpbox">
+				<i class="fal fa-at"></i>
+				<input asp-for="Input.Email" placeholder="Email" autocomplete="off" required>
+			</div>
+
+			<div class="inpbox">
+				<i class="fal fa-user"></i>
+				<input asp-for="Input.Username" placeholder="Username" autocomplete="off" required>
+			</div>
+			<div class="inpbox">
+				<i class="fal fa-lock"></i>
+				<input asp-for="Input.Password" type="password" placeholder="Password" autocomplete="off" required>
+			</div>
+
+			<div class="inpbox">
+				<i class="fal fa-lock"></i>
+				<input asp-for="Input.ConfirmPassword" type="password" placeholder="Confirm Password" autocomplete="off" required>
+			</div>
+
+			
+
+			<div class="valbox" asp-validation-summary="All">
+			</div>
+
+			<div class="inpbox1 btnbox">
+				<input class="button" type="submit" value="SIGN UP">
+			</div>
+
+			<a asp-page="./Login" asp-route-returnUrl="@Model.ReturnUrl" class="inpbox2"><i class="fal fa-user-plus"></i> Have a account? Sign In</a>
+
+			<div class="inpbox not-centered">
+				<img src="/images/google.png" alt="">
+				<input class="gbutton" type="submit" value="Sign Up with Google">
+			</div>
+		</div>
+
+
+
+	</form>
+
+</div>
+
+
+
+@section Scripts {
+	<partial name="_ValidationScriptsPartial" />
+}

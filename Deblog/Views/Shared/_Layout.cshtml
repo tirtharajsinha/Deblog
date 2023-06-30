@@ -1,0 +1,37 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>@ViewData["Title"] - Deblog</title>
+	<link rel="shortcut icon" href="/images/logoWithbg.png" type="image/png">
+	<link rel="stylesheet" href="~/css/style.css">
+</head>
+
+<body>
+	<nav>
+		<a class="sitelogo" href="/">
+			<img src="/images/logoWithbg.png" alt="">
+			<span>Deblog</span>
+		</a>
+		<div class="navelements">
+			<a href="#" class="lse">Write</a>
+			<partial name="_LoginPartial.cshtml" />
+		</div>
+	</nav>
+
+	@RenderBody()
+
+
+
+	<div class="footer">
+		<img src="/images/logoWithbg.png" alt="">
+	</div>
+
+	<script src="~/js/fontawasome5.15-pro.js"></script>
+	<script src="~/js/index.js"></script>
+	@await RenderSectionAsync("Scripts", required: false)
+</body>
+
+</html>
