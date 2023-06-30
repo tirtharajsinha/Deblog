@@ -9,7 +9,7 @@
 UserImage-*
 BlogImage-*
 
-**/Migration/
+**/Migrations/
 
 # User-specific files
 *.suo
