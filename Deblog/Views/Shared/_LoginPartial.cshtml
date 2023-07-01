@@ -8,7 +8,7 @@
 @if (SignInManager.IsSignedIn(User))
 {
 	<a onclick="logout()"><span class="danger">Sign Out</span></a>
-	<a asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage" class="nav-active mse">@UserManager.GetUserName(User)</a>
+	<a asp-action="Index" asp-controller="User" title="Manage" class="nav-active mse">@UserManager.GetUserName(User)</a>
 
 
 	<form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">

@@ -1,0 +1,28 @@
+Database:
+
+---
+
+UserData Table:
+
+-> Id references aspnetusers.Id (varchar)
+-> Image (IFormFile) [url string]
+-> ImageURL (varchar)
+-> Fullname (varchar)
+-> UserDesc (varchar)
+-> DOJ (Datetime)
+
+Articles Table:
+
+-> ArticleId (int)
+-> ArticleHeading (varchar)
+-> ArticleBody (varchar)
+-> ArticleImageURL (varchar)
+-> ArticleAuthor (varchar)
+-> ArticleType (varchar)
+-> ArticleDateTime (datetime)
+-> ArticleReadtime (int)
+
+SavedArticles Table:
+
+-> Id references Users.Id (varchar)
+-> ArticleId references Articles.ArticleId (int)

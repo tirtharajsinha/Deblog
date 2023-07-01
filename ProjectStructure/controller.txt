@@ -1,0 +1,24 @@
+HomeController:
+
+-> Landing Page (Index)
+
+
+
+UserController: (Authorize)
+
+-> / (Index)
+-> /Settings/ (Settings) 
+-> /Settings/ (Settings) POST
+
+
+
+ArticleController:
+
+-> / (Index)
+-> /?ProjectId=<id> (Index)
+-> /AddArticle (AddArticle)[Authorize]
+-> /AddArticle (AddArticle) POST [Authorize]
+-> /Editor (UpdateArticle) [Authorize]
+-> /Editor (UpdateArticle) POST	[Authorize]
+-> /DeleteArticle (DeleteArticle)[Authorize]
+-> /SaveArticle/<id> (SaveArticle)[Authorize] (API)

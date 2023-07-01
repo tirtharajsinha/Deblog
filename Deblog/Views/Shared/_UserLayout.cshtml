@@ -6,6 +6,12 @@
     <title>@ViewBag.Title</title>
 </head>
 <body>
+    <ul>
+        <li><a asp-action="Index" asp-controller="User">Dashboard</a></li>
+        <li><a asp-action="YourBlogs" asp-controller="Blog">Your blogs</a></li>
+        <li><a asp-action="NewBlog" asp-controller="Blog">New Blog</a></li>
+        <li><a asp-action="Settings" asp-controller="User">User Settings</a></li>
+    </ul>
     <div>
         @RenderBody()
     </div>

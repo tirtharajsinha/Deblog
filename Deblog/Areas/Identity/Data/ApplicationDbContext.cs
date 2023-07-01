@@ -23,5 +23,6 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
 
 	public DbSet<Userdata> Userdata { get; set; }
 
-	public DbSet<Deblog.Models.Userform>? Userform { get; set; }
+
+	public DbSet<Deblog.Models.Blog> Blogs { get; set; }
 }

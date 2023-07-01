@@ -1,0 +1,58 @@
+﻿@model Deblog.Models.Blog
+
+@{
+    ViewData["Title"] = "NewProject";
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+}
+
+<h1>NewProject</h1>
+
+<h4>Blog</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="BlogTitle" class="control-label"></label>
+                <input asp-for="BlogTitle" class="form-control" />
+                <span asp-validation-for="BlogTitle" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="BlogImageUrl" class="control-label"></label>
+                <input asp-for="BlogImageUrl" class="form-control" />
+                <span asp-validation-for="BlogImageUrl" class="text-danger"></span>
+            </div>
+            
+            <div class="form-group">
+                <label asp-for="BlogType" class="control-label"></label>
+                <select class="form-select" asp-for="BlogType">
+                    <option valur="public" selected>Public</option>
+                    <option value="private">Private</option>
+                </select>
+                <span asp-validation-for="BlogType" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="BlogTopic" class="control-label"></label>
+                <input asp-for="BlogTopic" class="form-control" />
+                <span asp-validation-for="BlogTopic" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="BlogReadtime" class="control-label"></label>
+                <input asp-for="BlogReadtime" class="form-control" />
+                <span asp-validation-for="BlogReadtime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

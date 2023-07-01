@@ -1,0 +1,33 @@
+﻿@model List<Blog>
+
+@{
+	ViewData["Title"] = "YourProject";
+	Layout = "~/Views/Shared/_UserLayout.cshtml";
+}
+
+<h1>YourBlogs</h1>
+
+@foreach (var blog in Model)
+{
+	<div style="padding:10px; border:2px solid black; border-radius:10px; margin:10px;">
+		<img src="@blog.BlogImageUrl" width="200px">
+		<br>
+		<h3><a asp-action="BlogEditor" asp-controller="Blog" asp-route-id=@blog.Id>@blog.BlogTitle</a></h3>
+
+		@if (blog.BlogStatus)
+		{
+			<h3>Published</h3>
+		}
+		else
+		{
+			<h3>Draft</h3>
+		}
+
+	</div>
+}
+
+@if (Model.Count == 0)
+{
+	<h1>You have no Blogs. Write one <a asp-action="NewBlog" asp-controller="Blog">Now</a></h1>
+}
+

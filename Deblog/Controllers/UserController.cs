@@ -27,6 +27,7 @@ namespace Deblog.Controllers
 		{
             var _userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
             var _userName = User.FindFirst(ClaimTypes.Name).Value;
+
             Userdata UserObj = _db.Userdata.FirstOrDefault(x => x.Id == _userId);
 
 			if (UserObj == null )
@@ -56,8 +57,14 @@ namespace Deblog.Controllers
 		{
             var _userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
             var _userName = User.FindFirst(ClaimTypes.Name).Value;
+
             Userdata UserObj = _db.Userdata.FirstOrDefault(x => x.Id == _userId);
-			Userform formObj = new Userform();
+			if (UserObj == null)
+			{ 
+				return RedirectToAction("Index");
+			}
+
+            Userform formObj = new Userform();
 			formObj.Id = _userId;
 			formObj.Fullname = UserObj.Fullname;
 			formObj.UserDesc= UserObj.UserDesc;
@@ -69,13 +76,17 @@ namespace Deblog.Controllers
 		[ValidateAntiForgeryToken]
 		public IActionResult Settings(Userform obj)
 		{
-			if (ModelState.IsValid)
-			{
-                var _userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-                var _userName = User.FindFirst(ClaimTypes.Name).Value;
-                Userdata UserObj = _db.Userdata.FirstOrDefault(x => x.Id == _userId);
+            var _userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var _userName = User.FindFirst(ClaimTypes.Name).Value;
 
-				UserObj.Fullname= obj.Fullname;
+            Userdata UserObj = _db.Userdata.FirstOrDefault(x => x.Id == _userId);
+            if (UserObj == null)
+            {
+                return RedirectToAction("Index");
+            }
+            if (ModelState.IsValid)
+			{
+                UserObj.Fullname= obj.Fullname;
 				UserObj.UserDesc= obj.UserDesc;
 
 				if (obj.Image != null)
@@ -85,9 +96,13 @@ namespace Deblog.Controllers
 					//create folder if not exist
 					if (!Directory.Exists(path))
 						Directory.CreateDirectory(path);
+					var imageId = 1;
 
-
-					var newfilename = $"UserImage-{obj.Id}.png";
+					if (UserObj.ImageUrl.EndsWith("1.png"))
+					{
+						imageId= 2;
+					}
+					var newfilename = $"UserImage-{obj.Id}-{imageId}.png";
 
                     var filePath = Path.Combine(path, newfilename);
 
@@ -105,7 +120,8 @@ namespace Deblog.Controllers
 
 				return RedirectToAction("Index");
 			}
-			return View(obj);
+            TempData["userimage"] = UserObj.ImageUrl;
+            return View(obj);
 		}
 	}
 }
