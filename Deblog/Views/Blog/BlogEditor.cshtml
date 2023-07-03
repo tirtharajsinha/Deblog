@@ -1,4 +1,5 @@
 ﻿@model Blog
+
 @{
 	ViewData["Title"] = "BlogEditor";
 	Layout = "~/Views/Shared/_UserLayout.cshtml";
@@ -13,6 +14,7 @@
 
 			<input asp-for="BlogAuthor" type="hidden">
 			<input asp-for=Id type="hidden">
+			<input asp-for=BlogStatus type="hidden">
 
 			<div class="form-group">
 				<label asp-for="BlogTitle" class="control-label"></label>
@@ -55,6 +57,7 @@
 				<textarea asp-for="BlogBody" class="form-control"></textarea>
 				<span asp-validation-for="BlogBody" class="text-danger"></span>
 			</div>
+
 			<div class="form-group">
 				<input type="submit" value="Save" class="btn btn-primary" />
 				@if (Model.BlogStatus == false)

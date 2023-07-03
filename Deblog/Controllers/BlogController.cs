@@ -4,6 +4,8 @@ using Deblog.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections;
+using System.Collections.Generic;
 using System.Security.Claims;
 
 namespace Deblog.Controllers
@@ -93,6 +95,7 @@ namespace Deblog.Controllers
 			if (ModelState.IsValid && obj.BlogAuthor == _userId)
 			{
 				obj.BlogDatetime = DateTime.Now;
+
 				_db.Blogs.Update(obj);
 				_db.SaveChanges();
 				return RedirectToAction("Index", "User");
@@ -122,9 +125,17 @@ namespace Deblog.Controllers
 
 			BlogContent blogContent = new BlogContent();
 			blogContent.Id = obj.Id;
-			blogContent.BlogAuthor=obj.BlogAuthor;
-			blogContent.BlogBody= obj.BlogBody;
-			blogContent.BlogStatus= obj.BlogStatus;
+			blogContent.BlogAuthor = obj.BlogAuthor;
+			blogContent.BlogBody = obj.BlogBody;
+			blogContent.BlogStatus = obj.BlogStatus;
+
+			string blogtitle = obj.BlogTitle;
+			if (blogtitle.Length > 40)
+			{
+				blogtitle = blogtitle.Substring(0, 40) + "...";
+			}
+
+			TempData["blogtitle"] = blogtitle;
 
 			return View(blogContent);
 		}
@@ -137,56 +148,95 @@ namespace Deblog.Controllers
 			var _userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
 			Blog obj = _db.Blogs.FirstOrDefault(x => x.Id == blogContent.Id);
-
-			if (ModelState.IsValid && blogContent.BlogAuthor == _userId && _userId==obj.BlogAuthor)
+			Hashtable responsedata;
+			if (ModelState.IsValid && blogContent.BlogAuthor == _userId && _userId == obj.BlogAuthor)
 			{
+
 				obj.BlogDatetime = DateTime.Now;
 				obj.BlogBody = blogContent.BlogBody;
 
 				_db.Blogs.Update(obj);
 				_db.SaveChanges();
-				return RedirectToAction("BlogWriter", "Blog");
+				responsedata = new Hashtable(){
+					{"Status", 200}
+				};
+				return Json(responsedata);
 			}
 
-			return View(obj);
+			responsedata = new Hashtable(){
+					{"Status", 404}
+			};
+
+			return Json(responsedata);
+		}
+
+
+		// if there is error of max-packet-allowed, follow this video https://www.youtube.com/watch?v=zDaaG8hFYlk
+
+
+		[Authorize]
+		public IActionResult Publish(int id)
+		{
+			var _userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+			Blog obj = _db.Blogs.FirstOrDefault(x => x.Id == id);
+
+			if (obj == null)
+			{
+				TempData["Message"] = "This id does not Exist";
+				return NotFound("This id does not Exist");
+			}
+			if (obj.BlogAuthor != _userId)
+			{
+				TempData["Message"] = "You are not authorized";
+				return NotFound("You are not authorized");
+			}
+
+			obj.BlogStatus = true;
+
+
+			_db.Blogs.Update(obj);
+			_db.SaveChanges();
+
+			string next = HttpContext.Request.Query["next"];
+
+			if (next != null && next == "BlogWriter")
+			{
+				return RedirectToAction("BlogWriter", new { id = id });
+			}
+			return RedirectToAction("Index", "User");
 		}
 
 
 		[Authorize]
-		[HttpPost]
-		public IActionResult Publish(Blog obj)
+		public IActionResult Unpublish(int id)
 		{
 			var _userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+			Blog obj = _db.Blogs.FirstOrDefault(x => x.Id == id);
 
-			if (ModelState.IsValid && obj.BlogAuthor == _userId)
+			if (obj == null)
 			{
-				obj.BlogDatetime = DateTime.Now;
-				obj.BlogStatus = true;
-				_db.Blogs.Update(obj);
-				_db.SaveChanges();
-				return RedirectToAction("Index", "User");
+				TempData["Message"] = "This id does not Exist";
+				return NotFound("This id does not Exist");
+			}
+			if (obj.BlogAuthor != _userId)
+			{
+				TempData["Message"] = "You are not authorized";
+				return NotFound("You are not authorized");
 			}
 
-			return View(obj);
-		}
+			obj.BlogStatus = false;
+			_db.Blogs.Update(obj);
+			_db.SaveChanges();
 
 
-		[Authorize]
-		[HttpPost]
-		public IActionResult Unpublish(Blog obj)
-		{
-			var _userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+			string next = HttpContext.Request.Query["next"];
 
-			if (ModelState.IsValid && obj.BlogAuthor == _userId)
+			if (next != null && next == "BlogWriter")
 			{
-				obj.BlogDatetime = DateTime.Now;
-				obj.BlogStatus = false;
-				_db.Blogs.Update(obj);
-				_db.SaveChanges();
-				return RedirectToAction("Index", "User");
+				return RedirectToAction("BlogWriter", new { id = id });
 			}
 
-			return View(obj);
+			return RedirectToAction("Index", "User");
 		}
 
 		[Authorize]
@@ -216,3 +266,5 @@ namespace Deblog.Controllers
 
 	}
 }
+
+

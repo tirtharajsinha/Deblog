@@ -21,25 +21,23 @@ var toolbarOptions = [
 hljs.highlightAll();
 
 
+
 var quill = new Quill('#editor', {
     modules: {
         toolbar: toolbarOptions,
         syntax: true,
     },
-    theme: 'snow',
+    theme: editortheme,
+
+
     placeholder: 'Compose an your best thoughts...',
 
-    // readOnly: true,
+     readOnly: readonly,
 });
 
+let defaultui = `<i class="fal fa-check"></i><span>Save</span>`;
 quill.on('text-change', function (delta, oldDelta, source) {
-    if (source == 'api') {
-        console.log("An API call triggered this change.");
-    } else if (source == 'user') {
-        var delta = quill.getContents();
-        console.log(JSON.parse(JSON.stringify(delta)));
-
-    }
+    document.getElementById("savedata").innerHTML = defaultui;
 });
 
 

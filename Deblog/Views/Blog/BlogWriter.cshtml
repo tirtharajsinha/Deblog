@@ -11,14 +11,17 @@
 	<meta charset='UTF-8'>
 	<meta http-equiv='X-UA-Compatible' content='IE=edge'>
 	<meta name='viewport' content='width=device-width, initial-scale=1.0'>
-	<link rel='stylesheet' href='https://www.w3schools.com/w3css/4/w3.css'>
-	<link rel='stylesheet' href='https://site-assets.fontawesome.com/releases/v6.4.0/css/all.css'>
+
+
 	<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
-	<link href="//cdn.quilljs.com/1.3.6/quill.bubble.css" rel="stylesheet">
+	<link href="https://cdn.quilljs.com/1.3.6/quill.bubble.css" rel="stylesheet">
+
+
 	<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/highlight.min.js'>
 	<link rel='stylesheet'
 		  href='https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/atom-one-dark.min.css'>
 	<link rel="stylesheet" href="/css/blogwriter.css">
+	<link rel="shortcut icon" href="/images/logoWithbg.png" type="image/png">
 
 
 
@@ -27,37 +30,125 @@
 
 <body>
 	<div class="navbar">
-		<div class="save navitem"><i class="fa-light fa-check"></i><span>Save</span></div>
-		<div class="tools navitem"><i class="fa-light fa-wrench"></i><span>Save</span></div>
 		<div class="others">
-			<div class="Settings navitem"><i class="fa-light fa-gear"></i><span>Settings</span></div>
-			<div class="Theme navitem"><i class="fa-light fa-fill-drip"></i><span>Save</span></div>
-			<div class="Publish navitem"><i class="fa-light fa-paper-plane"></i><span>Publish</span></div>
+			<div class="save navitem" id="savedata"><i class="fal fa-check"></i><span>Save</span></div>
+			<div class="navitem"></div>
+			<div class="navitem"></div>
+		</div>
+		<div class="tools navitem"><i class="fal fa-rocket-launch"></i><span>@TempData["blogtitle"]</span></div>
+		<div class="others">
+			<div class="Settings navitem"><i class="fal fa-cog"></i><span>Settings</span></div>
+			<div class="Theme navitem"><i class="fal fa-fill-drip"></i><span>Themes</span></div>
+			@if (Model.BlogStatus)
+			{
+				<div class="Unublish navitem">
+					<a asp-action="Unpublish" asp-controller="Blog" asp-route-id="@Model.Id" asp-route-next="BlogWriter"><i class="fal fa-unlink"></i><span>Unpublish</span></a>
+				</div>
+			}
+			else
+			{
+				<div class="Publish navitem">
+					<a asp-action="Publish" asp-controller="Blog" asp-route-id="@Model.Id" asp-route-next="BlogWriter"><i class="fal fa-paper-plane"></i><span>Publish</span></a>
+				</div>
+			}
+
 		</div>
 	</div>
+
 	<div class="metadata">
 		<div class="topnav">
-			<a href="#"><i class="fa-light fa-house-chimney"></i></a>
-			<a href="#"><i class="fa-light fa-eye"></i></a>
-			<a href="#"><i class="fa-light fa-file-lines"></i></a>
+			<a href="#"><i class="fal fa-house"></i></a>
+			<a href="#"><i class="fal fa-eye"></i></a>
+			<a href="#"><i class="fal fa-files-medical"></i></a>
 		</div>
 		<div class="bottomnav">
-			<a href="#"><i class="fa-light fa-square-question"></i></a>
-			<a href="#"><i class="fa-light fa-user"></i></a>
+			<a href="#"><i class="fal fa-question-circle"></i></a>
+			<a href="#"><i class="fal fa-user"></i></a>
 		</div>
 	</div>
 
 	<div class="container">
 		<div class="editor element" id="editor">
-			@Model.BlogBody
 		</div>
 	</div>
 
+	<script src="~/js/fontawasome5.15-pro.js"></script>
 	<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.2/jquery.min.js'></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
 	<script src='https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.js'></script>
 	<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+	<script>
+
+		var editortheme = "snow";
+		var readonly = false;
+		if(readonly){
+			editortheme = "bubble";
+		}
+
+	</script>
 	<script src="/js/blogwriter.js"></script>
+	<script>
+		//let defaultui = `<i class="fal fa-check"></i><span>Save</span>`;
+		let successui = `<i class="fal fa-check"  style="color:#79a866;"></i><span style="color:#79a866;">***</span>`;
+		let runningui = `<i class="fal fa-spinner-third fa-spin"></i><span>Save</span>`
+		let errorui = `<i class="fal fa-dizzy" style="color:red;"></i><span style="color:red;">Save</span>`
+
+		document.getElementById("savedata").addEventListener("click", (e) => {
+			saveblog();
+		})
+		function saveblog(auto = false) {
+			if (readonly) {
+				return;
+			}
+
+			document.getElementById("savedata").innerHTML = runningui;
+
+			let delta = quill.getContents();
+			let blogbody = JSON.stringify(delta);
+			let resui = successui;
+			if (auto) {
+				resui = resui.replace("***", "Autosaved");
+			}
+			else {
+				resui = resui.replace("***", "Saved");
+			}
+
+			$.post("/Blog/BlogWriter",
+				{
+					Id: @Model.Id,
+					BlogStatus: "@Model.BlogStatus",
+					BlogAuthor: "@Model.BlogAuthor",
+					BlogBody: blogbody
+				})
+				.done(function (data) {
+					console.log(data);
+					if (data["Status"] == 200) {
+						document.getElementById("savedata").innerHTML = resui;
+					}
+					else {
+						document.getElementById("savedata").innerHTML = errorui;
+					}
+				});
+		}
+
+
+		loadsaveddata();
+
+		function loadsaveddata() {
+			let blogbody = @Html.Raw(Json.Serialize(Model.BlogBody));
+			let delta = JSON.parse(blogbody);
+			quill.setContents(delta);
+		}
+
+		setInterval(function () {
+			saveblog(auto = true)
+		}, 60000);
+
+
+	</script>
+
+
+
 </body>
 
 </html>
