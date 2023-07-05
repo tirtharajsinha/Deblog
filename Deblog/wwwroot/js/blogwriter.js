@@ -32,13 +32,17 @@ var quill = new Quill('#editor', {
 
     placeholder: 'Compose an your best thoughts...',
 
-     readOnly: readonly,
+    readOnly: readonly,
 });
 
 let defaultui = `<i class="fal fa-check"></i><span>Save</span>`;
-quill.on('text-change', function (delta, oldDelta, source) {
-    document.getElementById("savedata").innerHTML = defaultui;
-});
+
+if (!readonly) {
+    quill.on('text-change', function (delta, oldDelta, source) {
+        document.getElementById("savedata").innerHTML = defaultui;
+    });
+}
+
 
 
 // quill.setContents(JSON.parse(jsontext));

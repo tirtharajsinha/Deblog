@@ -1,0 +1,133 @@
+﻿@import url(https://fonts.googleapis.com/css?family=Poppins:100,100italic,200,200italic,300,300italic,regular,italic,500,500italic,600,600italic,700,700italic,800,800italic,900,900italic);
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family:"Poppins",sans-serif;
+}
+
+:root {
+    --accent-color: #79a866;
+}
+
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    flex-direction:column;
+}
+
+.container {
+    width: 80%;
+    max-width:1000px;
+    min-width:700px;
+    min-height: 150vh;
+    /* box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); */
+    /* border-radius: 10px 10px 0 0; */
+    background-color: white;
+    margin-bottom: 20px;
+    margin-top:120px;
+}
+
+.titleblock{
+    width:100%;
+    margin-bottom:10px;
+}
+
+    .titleblock .blogtitle {
+        font-family: 'Roboto', sans-serif;
+        text-align: center;
+        letter-spacing: 1px;
+        font-weight: 600;
+        margin-bottom: 50px;
+        font-size:2.5rem;
+    }
+
+.ql-container {
+    font-size: 16px;
+    font-family: "Poppins", sans-serif;
+}
+
+.ql-snow .ql-editor pre.ql-syntax {
+    background-color: #282c34;
+}
+
+.ql-editor {
+    min-height: 100vh;
+}
+
+.ql-container.ql-snow {
+    border: none;
+}
+
+::-webkit-scrollbar-track {
+    background-color: white;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+    background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #37373791;
+    cursor: pointer;
+}
+
+
+.authorblock {
+    display: flex;
+    gap: 10px;
+    padding-left:10px;
+}
+
+.authorblock img{
+    width:45px;
+    height:45px;
+    border-radius:50%;
+}
+
+.authordetail{
+    display:flex;
+    flex-direction:column;
+    gap:5px;
+}
+
+.authordetail div{
+    display:flex;
+    gap:20px;
+    align-items:center;
+}
+
+.authorblock span{
+    font-size: 14px;
+    letter-spacing: 1px;
+}
+
+.authorname{
+    font-weight:600;
+    letter-spacing:1px;
+}
+
+.reactionbar{
+    display:flex;
+    font-size:20px;
+    margin-top:20px;
+    gap:15px;
+    cursor:pointer;
+    color:rgba(0,0,0,0.5);
+}
+
+
+
+@media screen and (max-width: 780px) {
+    .container{
+        min-width:unset;
+        width:calc(100% - 10px);
+    }
+    .titleblock .blogtitle{
+        font-size:1.8rem;
+    }
+}

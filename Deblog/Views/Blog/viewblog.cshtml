@@ -1,0 +1,110 @@
+﻿@model Tuple<Blog, Userdata>;
+
+
+@{
+	ViewData["Title"] = @Model.Item1.BlogTitle;
+}
+
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+	<meta charset='UTF-8'>
+	<meta http-equiv='X-UA-Compatible' content='IE=edge'>
+	<meta name='viewport' content='width=device-width, initial-scale=1.0'>
+
+
+	<link href="https://cdn.quilljs.com/1.3.6/quill.bubble.css" rel="stylesheet">
+
+
+	<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/highlight.min.js'>
+	<link rel='stylesheet'
+		  href='https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/atom-one-dark.min.css'>
+	<link rel="stylesheet" href="/css/viewblog.css">
+	<link rel="shortcut icon" href="/images/logoWithbg.png" type="image/png">
+
+
+
+	<title>BlogWriter</title>
+</head>
+
+<body>
+	<div class="container">
+		<div class="titleblock">
+			<h1 class="blogtitle">@Model.Item1.BlogTitle</h1>
+			<div class="authorblock">
+				<img src="@Model.Item2.ImageUrl" />
+				<div class="authordetail">
+					<div>
+						<span class="authorname">@Model.Item2.Fullname</span>
+						<i class="fas fa-circle" style="font-size:5px;"></i>
+						<span style="color:var(--accent-color);cursor:pointer;">Follow</span>
+					</div>
+					<div>
+						<span>@Model.Item1.BlogReadtime Min</span>
+						<i class="fas fa-circle" style="font-size:5px;"></i>
+						@if(Model.Item1.BlogDatetime.Year == DateTime.Now.Year)
+						{
+							<span>@Model.Item1.BlogDatetime.ToString("MMM dd")</span>
+						}
+						else
+						{
+							<span>@Model.Item1.BlogDatetime.ToString("MMM dd, yyyy")</span>
+						}
+
+					</div>
+					<div class="reactionbar">
+
+						<div class="like" title="like"><i class="fal fa-heart"></i></div>
+						<div class="save" title="save"><i class="fal fa-bookmark"></i></div>
+						<div class="Listen" title="Listen"><i class="fal fa-play-circle"></i></div>
+						<div class="share" title="share"><i class="fal fa-arrow-to-top"></i></div>
+
+					</div>
+
+				</div>
+			</div>
+		</div>
+		<div class="editor element" id="editor">
+		</div>
+	</div>
+
+	<script src="~/js/fontawasome5.15-pro.js"></script>
+	<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.2/jquery.min.js'></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+	<script src='https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.js'></script>
+	<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+	<script>
+
+		var editortheme = "snow";
+		var readonly = true;
+		if (readonly) {
+			editortheme = "bubble";
+		}
+
+	</script>
+	<script src="/js/blogwriter.js"></script>
+	<script>
+
+
+
+		loadsaveddata();
+
+		function loadsaveddata() {
+			let blogbody = @Html.Raw(Json.Serialize(Model.Item1.BlogBody));
+			let delta = JSON.parse(blogbody);
+			quill.setContents(delta);
+		}
+
+
+
+	</script>
+
+
+
+</body>
+
+</html>
+
+
+

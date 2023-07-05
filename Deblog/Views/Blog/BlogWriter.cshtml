@@ -41,14 +41,14 @@
 			<div class="Theme navitem"><i class="fal fa-fill-drip"></i><span>Themes</span></div>
 			@if (Model.BlogStatus)
 			{
-				<div class="Unublish navitem">
-					<a asp-action="Unpublish" asp-controller="Blog" asp-route-id="@Model.Id" asp-route-next="BlogWriter"><i class="fal fa-unlink"></i><span>Unpublish</span></a>
+				<div class="Unublish navitem" onclick="publish(false)">
+					<a><i class="fal fa-unlink"></i><span>Unpublish</span></a>
 				</div>
 			}
 			else
 			{
-				<div class="Publish navitem">
-					<a asp-action="Publish" asp-controller="Blog" asp-route-id="@Model.Id" asp-route-next="BlogWriter"><i class="fal fa-paper-plane"></i><span>Publish</span></a>
+				<div class="Publish navitem" onclick="publish(true)">
+					<a><i class="fal fa-paper-plane"></i><span>Publish</span></a>
 				</div>
 			}
 
@@ -57,8 +57,8 @@
 
 	<div class="metadata">
 		<div class="topnav">
-			<a href="#"><i class="fal fa-house"></i></a>
-			<a href="#"><i class="fal fa-eye"></i></a>
+			<a asp-action="Index" asp-controller="User"><i class="fal fa-house"></i></a>
+			<a asp-action="Index" asp-controller="Blog" asp-route-id=@Model.Id><i class="fal fa-eye"></i></a>
 			<a href="#"><i class="fal fa-files-medical"></i></a>
 		</div>
 		<div class="bottomnav">
@@ -81,7 +81,7 @@
 
 		var editortheme = "snow";
 		var readonly = false;
-		if(readonly){
+		if (readonly) {
 			editortheme = "bubble";
 		}
 
@@ -91,12 +91,12 @@
 		//let defaultui = `<i class="fal fa-check"></i><span>Save</span>`;
 		let successui = `<i class="fal fa-check"  style="color:#79a866;"></i><span style="color:#79a866;">***</span>`;
 		let runningui = `<i class="fal fa-spinner-third fa-spin"></i><span>Save</span>`
-		let errorui = `<i class="fal fa-dizzy" style="color:red;"></i><span style="color:red;">Save</span>`
+		let errorui = `<i class="fal fa-dizzy" style="color:red;"></i><span style="color:red;">Error</span>`
 
 		document.getElementById("savedata").addEventListener("click", (e) => {
 			saveblog();
 		})
-		function saveblog(auto = false) {
+		async function saveblog(auto = false, gopage = null) {
 			if (readonly) {
 				return;
 			}
@@ -124,6 +124,9 @@
 					console.log(data);
 					if (data["Status"] == 200) {
 						document.getElementById("savedata").innerHTML = resui;
+						if (gopage) {
+							window.location.href = gopage;
+						}
 					}
 					else {
 						document.getElementById("savedata").innerHTML = errorui;
@@ -143,6 +146,20 @@
 		setInterval(function () {
 			saveblog(auto = true)
 		}, 60000);
+
+		async function publish(pub) {
+			if (pub) {
+				let gopage = `/Blog/Publish/${@Model.Id}?next=BlogWriter`;
+				await saveblog(auto = false, gopage = gopage);
+
+			}
+			else {
+				let gopage = `/Blog/Unpublish/${@Model.Id}?next=BlogWriter`;
+				await saveblog(auto = false, gopage = gopage);
+
+			}
+		}
+
 
 
 	</script>

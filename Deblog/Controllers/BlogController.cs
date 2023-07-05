@@ -21,10 +21,24 @@ namespace Deblog.Controllers
 			_db = db;
 			_userManager = userManager;
 		}
-		public IActionResult Index()
+
+		public IActionResult Index(int id)
 		{
-			return View();
+			Blog obj = _db.Blogs.FirstOrDefault(x => x.Id == id);
+			Userdata AuthorData = _db.Userdata.FirstOrDefault(x => x.Id == obj.BlogAuthor);
+
+			if (obj == null)
+			{
+				TempData["Message"] = "This id does not Exist";
+				return NotFound("This id does not Exist");
+			}
+
+			var data = new Tuple<Blog, Userdata>(obj, AuthorData);
+
+			return View("viewblog",data);
 		}
+
+
 
 		[Authorize]
 		public IActionResult YourBlogs()
@@ -45,7 +59,7 @@ namespace Deblog.Controllers
 		public IActionResult NewBlog(Blog obj)
 		{
 			var _userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-
+			
 
 
 			obj.BlogAuthor = _userId;
