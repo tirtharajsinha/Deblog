@@ -1,7 +1,7 @@
 ﻿@model BlogContent
 
 @{
-	ViewData["Title"] = "BlogWriter";
+	ViewData["Title"] = $"Editing - {TempData["blogtitle"]}";
 	Layout = null;
 }
 <!DOCTYPE html>
@@ -37,8 +37,12 @@
 		</div>
 		<div class="tools navitem"><i class="fal fa-rocket-launch"></i><span>@TempData["blogtitle"]</span></div>
 		<div class="others">
-			<div class="Settings navitem"><i class="fal fa-cog"></i><span>Settings</span></div>
-			<div class="Theme navitem"><i class="fal fa-fill-drip"></i><span>Themes</span></div>
+			<a asp-action="BlogEditor" asp-controller="Blog" asp-route-id=@Model.Id class="Settings navitem">
+				<i class="fal fa-cog"></i><span>Settings</span>
+			</a>
+			<a asp-action="Index" asp-controller="Blog" asp-route-id=@Model.Id class="Theme navitem">
+				<i class="fal fa-eye"></i><span>View Blog</span>
+			</a>
 			@if (Model.BlogStatus)
 			{
 				<div class="Unublish navitem" onclick="publish(false)">

@@ -1,5 +1,9 @@
 ﻿@model Tuple<Blog, Userdata>;
+@using Microsoft.AspNetCore.Identity
+@using Deblog.Areas.Identity.Data
 
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
 
 @{
 	ViewData["Title"] = @Model.Item1.BlogTitle;
@@ -25,7 +29,7 @@
 
 
 
-	<title>BlogWriter</title>
+	<title>Writer - @Model.Item1.BlogTitle</title>
 </head>
 
 <body>
@@ -43,7 +47,7 @@
 					<div>
 						<span>@Model.Item1.BlogReadtime Min</span>
 						<i class="fas fa-circle" style="font-size:5px;"></i>
-						@if(Model.Item1.BlogDatetime.Year == DateTime.Now.Year)
+						@if (Model.Item1.BlogDatetime.Year == DateTime.Now.Year)
 						{
 							<span>@Model.Item1.BlogDatetime.ToString("MMM dd")</span>
 						}
@@ -53,17 +57,32 @@
 						}
 
 					</div>
-					<div class="reactionbar">
+					@if (SignInManager.IsSignedIn(User))
+					{
+						<div class="reactionbar">
 
-						<div class="like" title="like"><i class="fal fa-heart"></i></div>
-						<div class="save" title="save"><i class="fal fa-bookmark"></i></div>
-						<div class="Listen" title="Listen"><i class="fal fa-play-circle"></i></div>
-						<div class="share" title="share"><i class="fal fa-arrow-to-top"></i></div>
+							<div class="like" title="like"><i class="fal fa-heart"></i></div>
+							@if (TempData["bookmark"] == "Yes")
+							{
+								<div class="save" title="save" onclick="bookmark()"><i class="fad fa-bookmark"></i></div>
+							}
+							else
+							{
+								<div class="save" title="save" onclick="bookmark()"><i class="fal fa-bookmark"></i></div>
+							}
+							<div class="Listen" title="Listen"><i class="fal fa-play-circle"></i></div>
+							<div class="share" title="share"><i class="fal fa-arrow-to-top"></i></div>
 
-					</div>
+						</div>
+
+					}
+
 
 				</div>
 			</div>
+			<img src="@Model.Item1.BlogImageUrl" alt="" class="titleimage"/>
+
+
 		</div>
 		<div class="editor element" id="editor">
 		</div>
@@ -97,8 +116,29 @@
 		}
 
 
+		function bookmark() {
+			let ele = document.querySelector(".save");
+			//ele.innerHTML = `<i class="fad fa - spinner fa - spin"></i>`;
+			
+			$.get(`/Blog/Bookmark/`,{id:@Model.Item1.Id})
+				.done(function (data) {
+					console.log(data);
+					if (data["state"]) {
+						//bookmarked
+						
+						ele.innerHTML = `<i class="fad fa-bookmark"></i>`;
+					}
+					else {
+						// unbookmarked
+						ele.innerHTML = `<i class="fal fa-bookmark"></i>`;
+					}
+				});
+		}
+
 
 	</script>
+
+
 
 
 

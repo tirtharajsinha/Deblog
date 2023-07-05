@@ -25,7 +25,9 @@ namespace Deblog.Controllers
 		public IActionResult Index(int id)
 		{
 			Blog obj = _db.Blogs.FirstOrDefault(x => x.Id == id);
+			var _userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
 			Userdata AuthorData = _db.Userdata.FirstOrDefault(x => x.Id == obj.BlogAuthor);
+			Bookmark bookmark = _db.Bookmarks.FirstOrDefault(x => x.UserId == _userId && x.BlogId == id);
 
 			if (obj == null)
 			{
@@ -33,9 +35,18 @@ namespace Deblog.Controllers
 				return NotFound("This id does not Exist");
 			}
 
+			if (bookmark != null)
+			{
+				TempData["bookmark"] = "Yes";
+			}
+			else
+			{
+				TempData["bookmark"] = "No";
+			}
+
 			var data = new Tuple<Blog, Userdata>(obj, AuthorData);
 
-			return View("viewblog",data);
+			return View("viewblog", data);
 		}
 
 
@@ -59,7 +70,7 @@ namespace Deblog.Controllers
 		public IActionResult NewBlog(Blog obj)
 		{
 			var _userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-			
+
 
 
 			obj.BlogAuthor = _userId;
@@ -275,6 +286,36 @@ namespace Deblog.Controllers
 			_db.SaveChanges();
 
 			return RedirectToAction("Index", "User");
+		}
+
+		[Authorize]
+		public IActionResult Bookmark(int id)
+		{
+			var _userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+			Bookmark bookmark = _db.Bookmarks.FirstOrDefault(x => x.UserId == _userId && x.BlogId == id);
+			Hashtable responsedata;
+            if (bookmark==null)
+            {
+				Bookmark newbook = new Bookmark();
+				newbook.UserId = _userId;
+				newbook.BlogId = id;
+                _db.Bookmarks.Add(newbook);
+				_db.SaveChanges();
+				responsedata = new Hashtable(){
+					{"state", true}
+			};
+			}
+			else
+			{
+				_db.Bookmarks.Remove(bookmark);
+				_db.SaveChanges();
+				responsedata = new Hashtable(){
+					{"state", false}
+			};
+			}
+
+            
+			return Json(responsedata);
 		}
 
 

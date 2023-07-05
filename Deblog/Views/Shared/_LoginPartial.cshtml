@@ -1,14 +1,47 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using Deblog.Areas.Identity.Data
+@using Deblog.Data
 
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
+@inject ApplicationDbContext _context;
+
+@{
+	ViewBag.Context = _context;
+	var _db = ViewBag.Context as ApplicationDbContext;
+	Userdata UserObj = _db.Userdata.FirstOrDefault(x => x.Id == UserManager.GetUserId(User));
+}
+
+<style>
+	.dpimage{
+		width:30px;
+		height:30px;
+		border-radius:50%;
+	}
+</style>
 
 
 @if (SignInManager.IsSignedIn(User))
 {
-	<a onclick="logout()"><span class="danger"><i class="fal fa-sign-out"></i><span class="mse"> Sign Out</span></span></a>
-	<a asp-action="Index" asp-controller="User" title="Manage" class="nav-active"><i class="far fa-user"></i> <span class="mse">@UserManager.GetUserName(User)</span></a>
+	
+	<div class="dpbutton">
+		<img src="@UserObj.ImageUrl" alt="" class="dpimage">
+		<div class="navmenu">
+			<a asp-action="NewBlog" asp-controller="Blog"><i class="fal fa-edit"></i> Write</a>
+			<div class="sep"></div>
+			<a asp-action="Index" asp-controller="User"><i class="fal fa-user-alt"></i>DashBoard</a>
+			<a asp-action="Settings" asp-controller="User"><i class="fal fa-cog"></i>Settings</a>
+			<a href="#"><i class="fal fa-bookmark"></i>Favorites</a>
+			<a asp-action="YourBlogs" asp-controller="Blog"><i class="fal fa-file-certificate"></i>Your Blogs</a>
+			<div class="sep"></div>
+
+			<a asp-action="YourBlogs" asp-controller="Blog" >Manage Publications</a>
+			<a href="#">help</a>
+			<div class="sep"></div>
+			<a onclick="logout()" class="danger"><i class="fal fa-sign-out"></i>Sign Out</a>
+
+		</div>
+	</div>
 
 
 	<form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
@@ -28,5 +61,6 @@ else
 	function logout() {
 		document.getElementById("logout").click();
 	}
+
 
 </script>
