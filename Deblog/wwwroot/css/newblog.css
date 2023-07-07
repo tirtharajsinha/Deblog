@@ -1,0 +1,144 @@
+.newblogcontainer {
+    display: flex;
+    justify-content: right;
+}
+
+.leftbox {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 300px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    background-color: var(--accent-color);
+}
+
+.newblogform {
+    width: calc(100% - 300px);
+    min-height: 100vh;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+}
+
+.formgroup {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 60%;
+    min-width: 500px;
+    min-width: 300px;
+}
+
+    .formgroup h2 {
+        width: 100%;
+        margin-bottom: 10px;
+        font-weight: 600;
+        letter-spacing: 1px;
+        margin-bottom: 30px;
+        padding-left: 10px;
+    }
+
+    .formgroup label,
+    .formgroup input,
+    .formgroup select {
+        width: 100%;
+    }
+
+    .formgroup label {
+        margin-bottom: 10px;
+    }
+
+    .formgroup input,
+    .formgroup select {
+        padding: 7px;
+        font-size: 16px;
+        border-radius: 7px;
+        outline: none;
+        border: 1px solid rgba(0, 0, 0, 0.16);
+        position: relative;
+        z-index: 1;
+    }
+
+        .formgroup input:focus {
+            border: 1px var(--accent-color) solid;
+        }
+
+    .formgroup label {
+        font-size: 14px;
+        font-weight: 600;
+        color: rgba(0, 0, 0, 0.507);
+        padding-left: 5px;
+        letter-spacing: 1px;
+    }
+
+    .formgroup input[type="submit"] {
+        border: none;
+        background-color: var(--accent-color);
+        color: var(--text-accent-color);
+        cursor: pointer;
+        font-size: 18px;
+        letter-spacing: 1px;
+        color: white;
+        font-weight: 500;
+        margin-top: 10px;
+    }
+
+    .formgroup .text-danger {
+        color: tomato;
+        padding-left: 10px;
+    }
+
+.leftbox p {
+    width: 100%;
+    padding: 15%;
+    color: #000732;
+    font-size: 30px;
+    font-weight: 300;
+    z-index:2;
+}
+
+    .leftbox p span {
+        color: rgba(255, 255, 255, 0.791);
+        font-weight: 600;
+        padding-top: 20px;
+    }
+
+.curve {
+    position: absolute;
+    bottom: -10px;
+    left: 0;
+}
+
+    .curve img {
+        width: 300px;
+        height: 400px;
+        -webkit-mask-image: -webkit-gradient( linear, left bottom, left top, from(rgba(0, 0, 0, 0.6)), to(rgba(0, 0, 0, 0)) );
+        mask-image: linear-gradient(to top, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0));
+        
+    }
+
+@media screen and (max-width: 680px) {
+    .leftbox {
+        display: none;
+    }
+
+    .newblogcontainer {
+        justify-content: center;
+    }
+
+    .newblogform {
+        width: 100%;
+    }
+}
+
+
+.footer{
+    display:none;
+}

@@ -4,6 +4,9 @@ using Deblog.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting;
 using System.Collections;
 using System.Collections.Generic;
 using System.Security.Claims;
@@ -22,12 +25,38 @@ namespace Deblog.Controllers
 			_userManager = userManager;
 		}
 
+		//public IActionResult Index()
+		//{
+		//	return RedirectToAction("Index", "Home");
+		//}
+
 		public IActionResult Index(int id)
 		{
+			if (id == 0 || id == null)
+			{
+				return RedirectToAction("Index", "Home");
+			}
 			Blog obj = _db.Blogs.FirstOrDefault(x => x.Id == id);
-			var _userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+
+			if (User.Identity.IsAuthenticated)
+			{
+				var _userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+				Bookmark bookmark = _db.Bookmarks.FirstOrDefault(x => x.UserId == _userId && x.BlogId == id);
+				if (bookmark != null)
+				{
+					TempData["bookmark"] = "Yes";
+				}
+				else
+				{
+					TempData["bookmark"] = "No";
+				}
+			}
+
+
+
 			Userdata AuthorData = _db.Userdata.FirstOrDefault(x => x.Id == obj.BlogAuthor);
-			Bookmark bookmark = _db.Bookmarks.FirstOrDefault(x => x.UserId == _userId && x.BlogId == id);
+
 
 			if (obj == null)
 			{
@@ -35,14 +64,7 @@ namespace Deblog.Controllers
 				return NotFound("This id does not Exist");
 			}
 
-			if (bookmark != null)
-			{
-				TempData["bookmark"] = "Yes";
-			}
-			else
-			{
-				TempData["bookmark"] = "No";
-			}
+
 
 			var data = new Tuple<Blog, Userdata>(obj, AuthorData);
 
@@ -55,7 +77,10 @@ namespace Deblog.Controllers
 		public IActionResult YourBlogs()
 		{
 			var _userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-			List<Blog> objCategoryList = _db.Blogs.Where(p => p.BlogAuthor == _userId).ToList();
+			List<Blog> objCategoryList = _db.Blogs
+				.Where(p => p.BlogAuthor == _userId)
+				.OrderByDescending(m => m.BlogDatetime)
+				.ToList();
 			return View(objCategoryList);
 		}
 
@@ -83,7 +108,7 @@ namespace Deblog.Controllers
 				_db.Blogs.Add(obj);
 				_db.SaveChanges();
 
-				return RedirectToAction("Index", "User");
+				return RedirectToAction("BlogWriter", "Blog", new { id = obj.Id });
 			}
 			return View();
 		}
@@ -291,15 +316,24 @@ namespace Deblog.Controllers
 		[Authorize]
 		public IActionResult Bookmark(int id)
 		{
+			if (id == 0)
+			{
+				return NotFound();
+			}
 			var _userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+			Blog obj = _db.Blogs.FirstOrDefault(x => x.Id == id);
+			if (obj == null)
+			{
+				return NotFound();
+			}
 			Bookmark bookmark = _db.Bookmarks.FirstOrDefault(x => x.UserId == _userId && x.BlogId == id);
 			Hashtable responsedata;
-            if (bookmark==null)
-            {
+			if (bookmark == null)
+			{
 				Bookmark newbook = new Bookmark();
 				newbook.UserId = _userId;
 				newbook.BlogId = id;
-                _db.Bookmarks.Add(newbook);
+				_db.Bookmarks.Add(newbook);
 				_db.SaveChanges();
 				responsedata = new Hashtable(){
 					{"state", true}
@@ -314,8 +348,32 @@ namespace Deblog.Controllers
 			};
 			}
 
-            
+
 			return Json(responsedata);
+		}
+
+		[Authorize]
+		public IActionResult MyBookmarks()
+		{
+			var _userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+
+			List<int> bookmarkedId = _db.Bookmarks.Where(p => p.UserId == _userId).Select(bp => bp.BlogId).ToList();
+
+			//List<Blog> bookmarked = _db.Blogs.Where(p => bookmarkedId.Contains(p.Id)).ToList();
+			List<Blog> bookmarked = _db.Blogs.ToList();
+			List<Blog> savedblogs = new List<Blog>();
+			foreach (var blg in bookmarked)
+			{
+				if (bookmarkedId.Contains(blg.Id))
+				{
+					savedblogs.Add(blg);
+				}
+			}
+
+
+
+			return View(savedblogs);
 		}
 
 

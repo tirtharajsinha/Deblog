@@ -72,6 +72,7 @@ nav {
         text-decoration: none;
         display: flex;
         align-items: center;
+        z-index: 5;
     }
 
         nav .sitelogo img {
@@ -92,6 +93,7 @@ nav {
         align-items: center;
         justify-content: right;
         gap: 15px;
+        z-index:5;
     }
 
         nav .navelements a {
@@ -139,6 +141,7 @@ nav {
     align-items: center;
     padding: 0 10%;
     padding-top: 50px;
+    position:relative;
 }
 
     .banner .tagline {
@@ -185,6 +188,13 @@ nav {
     .banner .tagline .bigbtn {
         font-size: 1.2rem;
     }
+}
+
+
+.content {
+    width: 100%;
+    margin-top: 60px;
+    min-height:100vh;
 }
 
 .container {
@@ -335,6 +345,21 @@ nav {
         font-weight: 600;
     }
 
+
+.curvehex {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+}
+
+    .curvehex img {
+        width: 50vw;
+        height: 60.8px;
+        -webkit-mask-image: -webkit-gradient( linear, right top, left bottom, from(rgba(0, 0, 0, 0.5)), to(rgba(0, 0, 0, 0)) );
+        mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));
+        filter: brightness(0.9) invert(.7) sepia(.5) hue-rotate(100deg) saturate(200%);
+    }
+
 @media screen and (max-width: 1150px) {
     .trends {
         grid-template-columns: repeat(2, 48%);
@@ -401,15 +426,23 @@ nav {
     .container {
         padding: 0 20px;
     }
+    .curvehex img {
+        width:80vh;
+    }
 }
 
 @media screen and (max-width: 480px) {
     .blog .trendblog .title {
-        font-size: 14px;
+        font-size: 16px;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
     }
 
     .blog .trendblog .otherdata {
         font-size: 14px;
+    }
+    .curvehex img {
+        width: 50vh;
     }
 }
 
@@ -453,6 +486,7 @@ nav {
     right: 0px;
     background-color: white;
     width: 250px;
+    z-index:10;
 }
 
     .navmenu .sep {
@@ -482,3 +516,11 @@ nav .navelements .navmenu .danger {
 .showmenu {
     display: flex;
 }
+@media screen and (max-width: 480px) {
+    .myblogimg {
+        height: 100px;
+    }
+}
+
+
+

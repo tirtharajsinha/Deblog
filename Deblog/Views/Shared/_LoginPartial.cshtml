@@ -31,7 +31,7 @@
 			<div class="sep"></div>
 			<a asp-action="Index" asp-controller="User"><i class="fal fa-user-alt"></i>DashBoard</a>
 			<a asp-action="Settings" asp-controller="User"><i class="fal fa-cog"></i>Settings</a>
-			<a href="#"><i class="fal fa-bookmark"></i>Favorites</a>
+			<a asp-action="MyBookmarks" asp-controller="Blog"><i class="fal fa-bookmark"></i>Favorites</a>
 			<a asp-action="YourBlogs" asp-controller="Blog"><i class="fal fa-file-certificate"></i>Your Blogs</a>
 			<div class="sep"></div>
 
@@ -51,8 +51,8 @@
 }
 else
 {
-	<a id="login" asp-area="Identity" asp-page="/Account/Login"><i class="fal fa-sign-in-alt"></i><span class="mse"> Sign In</span></a>
-	<a id="register" asp-area="Identity" asp-page="/Account/Register" class="nav-active">Get Started</a>
+	<a id="login" id="login" asp-area="Identity" asp-page="/Account/Login" asp-route-ReturnUrl="@Context.Request.Path"><i class="fal fa-sign-in-alt"></i><span class="mse"> Sign In</span></a>
+	<a id="register" asp-area="Identity" asp-page="/Account/Register" asp-route-ReturnUrl="@Context.Request.Path" class="nav-active">Get Started</a>
 
 }
 

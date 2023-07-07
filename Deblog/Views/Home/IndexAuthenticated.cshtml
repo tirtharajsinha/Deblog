@@ -2,58 +2,24 @@
 
 @{
 	ViewData["Title"] = "Home";
-	var trendcount = 0;
-	var topblogs = Model.Item1.GetRange(0, 6);
-	topblogs.Shuffle();
+
+	var topblogs = Model.Item1;
+	if (Model.Item1.Count() > 20)
+	{
+		topblogs = Model.Item1.GetRange(0, 6);
+	}
 }
 
-<div class="banner">
-	<div class="tagline">
-		<h1>Be Open</h1>
-		<p>Be updated, keep you and others informative and relevant. Reach the world through Deblog.</p>
-		<a href="/" class="bigbtn">Let's Go</a>
 
-	</div>
-</div>
+@section AddToHead{
+	<style>
+		.container{
+			margin-top:100px;
+		}
+	</style>
+}
+
 <div class="container">
-	<div class="trending">
-		<h4><i class="fal fa-megaphone"></i> Find what's going on Deblog</h4>
-		<div class="trends">
-
-			@foreach (Blog blog in topblogs)
-			{
-				<div class="trendblog">
-					<div class="author">
-						<img src="@Model.Item2[@blog.BlogAuthor].ImageUrl" alt="">
-						<span>@Model.Item2[@blog.BlogAuthor].Fullname</span>
-					</div>
-					<div class="title">
-						@blog.BlogTitle
-					</div>
-					<div class="otherdata">
-						<div>
-							@if (blog.BlogDatetime.Year == DateTime.Now.Year)
-							{
-								<span>@blog.BlogDatetime.ToString("MMM dd")</span>
-							}
-							else
-							{
-								<span>@blog.BlogDatetime.ToString("MMM dd, yyyy")</span>
-							}
-						</div>
-						<span>·</span>
-						<div>@blog.BlogReadtime</div>
-					</div>
-					@{
-						trendcount++;
-					}
-					<span class="numbering">@trendcount</span>
-				</div>
-			}
-		</div>
-	</div>
-
-
 	<div class="readmore">
 		<div class="trendingtopics">
 			<h4><i class="fal fa-hands-helping"></i> You want it, you get it.</h4>
@@ -64,9 +30,9 @@
 
 
 		<div class="moreblogs">
-			<h4><i class="fal fa-stars"> </i> Read recent Blogs</h4>
+			<h3><i class="fal fa-stars"> </i> See what are going trending</h3>
 			<div class="blogs">
-				@foreach (Blog blog in Model.Item1)
+				@foreach (Blog blog in topblogs)
 				{
 					<div class="blog">
 						<img class="mse blogimg" src="@blog.BlogImageUrl" alt="">
@@ -94,7 +60,7 @@
 
 							</div>
 						</div>
-						
+
 					</div>
 				}
 			</div>

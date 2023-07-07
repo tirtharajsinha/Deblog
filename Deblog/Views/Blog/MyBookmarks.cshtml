@@ -1,7 +1,8 @@
 ﻿@model List<Blog>
 
 @{
-	ViewData["Title"] = "YourProject";
+    ViewData["Title"] = "MyBookmarks";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 @section AddToHead{
@@ -14,16 +15,10 @@
 			.trendblog .author span {
 				font-weight: 600;
 				font-size: 16px;
-				padding:5px 15px;
-				border-radius:20px;
-				color:white;
-			}
-
-			.trendblog .author .state{
+				padding: 5px 15px;
 				background: var(--accent-color);
-			}
-			.trendblog .author .type{
-				background: var(--text-accent-color);
+				border-radius: 20px;
+				color: white;
 			}
 
 
@@ -58,6 +53,10 @@
 			margin: 40px 0 50px 0;
 		}
 
+			.moreblogs h2 i{
+				margin-right:10px;
+			}
+
 		.noblog {
 			text-align: center;
 			margin: 40px 0 50px 0;
@@ -66,15 +65,11 @@
 	</style>
 }
 
-
-
-
-
 <div class="container">
 
 	<div class="readmore">
 		<div class="moreblogs">
-			<h2><i class="fal fa-stars"> </i> Your Blogs</h2>
+			<h2><i class="fad fa-bookmark"> </i> Your Bookmarks</h2>
 			<div class="blogs">
 				@foreach (var blog in Model)
 				{
@@ -84,17 +79,6 @@
 								 src="@blog.BlogImageUrl" alt="">
 						</a>
 						<div class="trendblog">
-							<div class="author">
-								@if (blog.BlogStatus)
-								{
-									<span class="state">Published</span>
-								}
-								else
-								{
-									<span class="state">Draft</span>
-								}
-								<span class="type">@blog.BlogType</span>
-							</div>
 							<div class="title">
 								<a asp-action="Index" asp-controller="Blog" asp-route-id=@blog.Id>@blog.BlogTitle</a>
 							</div>
@@ -126,9 +110,8 @@
 	</div>
 </div>
 
-
 @if (Model.Count == 0)
 {
-	<h3 class="noblog">You have no Blogs. Write one <a asp-action="NewBlog" asp-controller="Blog">Now</a></h3>
+	<h1>You have no bookmarked Blogs. Read Blogs<a asp-action="Index" asp-controller="Blog">Now</a></h1>
 }
 

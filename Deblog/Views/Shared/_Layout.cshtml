@@ -7,6 +7,10 @@
 	<title>@ViewData["Title"] - Deblog</title>
 	<link rel="shortcut icon" href="/images/logoWithbg.png" type="image/png">
 	<link rel="stylesheet" href="~/css/style.css">
+	@if (IsSectionDefined("AddToHead"))
+	{
+		@RenderSection("AddToHead", required: false)
+	}
 </head>
 
 <body>
@@ -20,9 +24,15 @@
 			<a asp-action="NewBlog" asp-controller="Blog" class="lse"><i class="fal fa-bell"></i></a>
 			<partial name="_LoginPartial.cshtml" />
 		</div>
+		<div class="curvehex">
+			<img src="/Images/hex.jpg" alt="">
+		</div>
 	</nav>
 
-	@RenderBody()
+	<div class="content">
+		@RenderBody()
+	</div>
+	
 
 
 

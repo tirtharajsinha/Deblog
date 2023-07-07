@@ -28,8 +28,8 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
 	public DbSet<Userdata> Userdata { get; set; }
 
 
-	public DbSet<Deblog.Models.Blog> Blogs { get; set; }
+	public DbSet<Blog> Blogs { get; set; }
 
 
-	public DbSet<Deblog.Models.Bookmark> Bookmarks { get; set; }
+	public DbSet<Bookmark> Bookmarks { get; set; }
 }

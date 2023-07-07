@@ -57,6 +57,7 @@ if (!app.Environment.IsDevelopment())
 AdminCreator adminCreator = new AdminCreator();
 await adminCreator.AdminUserCreator(app.Services.CreateScope().ServiceProvider);
 
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 

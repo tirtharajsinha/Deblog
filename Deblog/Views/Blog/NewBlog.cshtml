@@ -1,58 +1,62 @@
 ﻿@model Deblog.Models.Blog
 
 @{
-    ViewData["Title"] = "NewProject";
-    Layout = "~/Views/Shared/_UserLayout.cshtml";
+    ViewData["Title"] = "New Blow";
 }
 
-<h1>NewProject</h1>
+@section AddToHead{
+    <link href="@Url.Content("~/css/newblog.css")" rel="stylesheet" type="text/css" />
+}
 
-<h4>Blog</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form method="post">
-            <div asp-validation-summary="All" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="BlogTitle" class="control-label"></label>
-                <input asp-for="BlogTitle" class="form-control" />
-                <span asp-validation-for="BlogTitle" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="BlogImageUrl" class="control-label"></label>
-                <input asp-for="BlogImageUrl" class="form-control" />
-                <span asp-validation-for="BlogImageUrl" class="text-danger"></span>
-            </div>
-            
-            <div class="form-group">
-                <label asp-for="BlogType" class="control-label"></label>
-                <select class="form-select" asp-for="BlogType">
-                    <option valur="public" selected>Public</option>
-                    <option value="private">Private</option>
-                </select>
-                <span asp-validation-for="BlogType" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="BlogTopic" class="control-label"></label>
-                <input asp-for="BlogTopic" class="form-control" />
-                <span asp-validation-for="BlogTopic" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="BlogReadtime" class="control-label"></label>
-                <input asp-for="BlogReadtime" class="form-control" />
-                <span asp-validation-for="BlogReadtime" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+<div class="newblogcontainer">
+    <div class="leftbox">
+        <p>Unlish your true creativity with Deblog, <span>Start a new blog post now.</span></p>
+        <div class="curve">
+            <img src="/Images/curve.png" alt="">
+        </div>
     </div>
+    <form class="newblogform" method="post">
+        <div class="formgroup">
+            <h2>Initiate your New Blog</h2>
+
+        </div>
+        <div class="formgroup">
+            <label asp-for="BlogTitle">Blog Title</label>
+            <input asp-for="BlogTitle" placeholder="Drop a playful and consize title">
+            <span asp-validation-for="BlogTitle" class="text-danger"></span>
+        </div>
+        <div class="formgroup">
+            <label asp-for="BlogImageUrl">Blog Image Url</label>
+            <input asp-for="BlogImageUrl" type="url" placeholder="Put a stunning image(URL)">
+            <span asp-validation-for="BlogImageUrl" class="text-danger"></span>
+        </div>
+        <div class="formgroup">
+            <label asp-for="BlogType" class="control-label">Choose your blog type</label>
+            <select asp-for="BlogType">
+                <option value="public" selected>Public</option>
+                <option value="private">Private</option>
+            </select>
+            <span asp-validation-for="BlogType" class="text-danger"></span>
+        </div>
+        <div class="formgroup">
+            <label asp-for="BlogTopic">Keyword</label>
+            <input asp-for="BlogTopic" placeholder="Drop Some keywords(comma seperated)">
+            <span asp-validation-for="BlogTopic" class="text-danger"></span>
+        </div>
+        <div class="formgroup">
+            <label asp-for="BlogReadtime">Blog Read Time(In minutes)</label>
+            <input asp-for="BlogReadtime" placeholder="Estemated time to read your blog">
+            <span asp-validation-for="BlogReadtime" class="text-danger"></span>
+        </div>
+        <div class="formgroup">
+            <input type="submit" placeholder="Estemated time to read your blog" value="Add new Blog">
+        </div>
+
+    </form>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
+@section Scripts{
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+}

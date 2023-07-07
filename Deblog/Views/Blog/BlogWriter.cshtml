@@ -61,13 +61,13 @@
 
 	<div class="metadata">
 		<div class="topnav">
-			<a asp-action="Index" asp-controller="User"><i class="fal fa-house"></i></a>
-			<a asp-action="Index" asp-controller="Blog" asp-route-id=@Model.Id><i class="fal fa-eye"></i></a>
-			<a href="#"><i class="fal fa-files-medical"></i></a>
+			<a asp-action="Index" asp-controller="Home"><i class="fal fa-house"></i></a>
+			<a asp-action="Index" asp-controller="User"><i class="fas fa-th-large"></i></a>
+			<a asp-action="NewBlog" asp-controller="Blog"><i class="fal fa-files-medical"></i></a>
 		</div>
 		<div class="bottomnav">
 			<a href="#"><i class="fal fa-question-circle"></i></a>
-			<a href="#"><i class="fal fa-user"></i></a>
+			<a asp-action="Index" asp-controller="Settings"><i class="fal fa-user"></i></a>
 		</div>
 	</div>
 

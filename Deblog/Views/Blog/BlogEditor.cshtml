@@ -1,76 +1,75 @@
 ﻿@model Blog
 
 @{
-	ViewData["Title"] = "BlogEditor";
-	Layout = "~/Views/Shared/_UserLayout.cshtml";
+	ViewData["Title"] = $"Editing - {Model.BlogTitle}";
 }
 
-<h1>BlogEditor</h1>
+@section AddToHead{
+	<link href="@Url.Content("~/css/newblog.css")" rel="stylesheet" type="text/css" />
+	<style>
+		.curve img{
+			filter: brightness(0.9) invert(.7) sepia(.5) hue-rotate(100deg) saturate(200%);
+		}
+	</style>
+}
 
-<div class="row">
-	<div class="col-md-4">
-		<form method="post">
-			<div asp-validation-summary="All" class="text-danger"></div>
-
-			<input asp-for="BlogAuthor" type="hidden">
-			<input asp-for=Id type="hidden">
-			<input asp-for=BlogStatus type="hidden">
-
-			<div class="form-group">
-				<label asp-for="BlogTitle" class="control-label"></label>
-				<input asp-for="BlogTitle" class="form-control" />
-				<span asp-validation-for="BlogTitle" class="text-danger"></span>
-			</div>
-
-			<img src="@Model.BlogImageUrl" width="200px">
-
-
-
-			<div class="form-group">
-				<label asp-for="BlogImageUrl" class="control-label"></label>
-				<input asp-for="BlogImageUrl" class="form-control" />
-				<span asp-validation-for="BlogImageUrl" class="text-danger"></span>
-			</div>
-
-			<div class="form-group">
-				<label asp-for="BlogType" class="control-label"></label>
-				<select class="form-select" asp-for="BlogType">
-					<option valur="public" selected>Public</option>
-					<option value="private">Private</option>
-				</select>
-				<span asp-validation-for="BlogType" class="text-danger"></span>
-			</div>
-
-			<div class="form-group">
-				<label asp-for="BlogTopic" class="control-label"></label>
-				<input asp-for="BlogTopic" class="form-control" />
-				<span asp-validation-for="BlogTopic" class="text-danger"></span>
-			</div>
-
-			<div class="form-group">
-				<label asp-for="BlogReadtime" class="control-label"></label>
-				<input asp-for="BlogReadtime" class="form-control" />
-				<span asp-validation-for="BlogReadtime" class="text-danger"></span>
-			</div>
-			<div class="form-group">
-				<label asp-for="BlogBody" class="control-label"></label>
-				<textarea asp-for="BlogBody" class="form-control"></textarea>
-				<span asp-validation-for="BlogBody" class="text-danger"></span>
-			</div>
-
-			<div class="form-group">
-				<input type="submit" value="Save" class="btn btn-primary" />
-				@if (Model.BlogStatus == false)
-				{
-					<button type="submit" formaction="/Blog/Publish">Publish</button>
-					<a asp-action="RemoveBlog" asp-controller="Blog" asp-route-id=@Model.Id >Remove This Blog</a>
-				}
-				else
-				{
-					<button type="submit" formaction="/Blog/Unpublish">Archive</button>
-				}
-
-			</div>
-		</form>
+<div class="newblogcontainer">
+	<div class="leftbox">
+		<p>Unlish your true creativity with Deblog, <span>Update you blog now</span></p>
+		<div class="curve">
+			<img src="/Images/trangle2.png" alt="">
+		</div>
 	</div>
+	<form class="newblogform" method="post">
+		<div class="formgroup">
+			<h2>Keep you Blog updated</h2>
+
+		</div>
+
+		<input asp-for="BlogAuthor" type="hidden">
+		<input asp-for=Id type="hidden">
+		<input asp-for=BlogStatus type="hidden">
+		<input asp-for="BlogBody" type="hidden">
+		<div class="formgroup">
+			<label asp-for="BlogTitle">Blog Title</label>
+			<input asp-for="BlogTitle" placeholder="Drop a playful and consize title">
+			<span asp-validation-for="BlogTitle" class="text-danger"></span>
+		</div>
+		<div class="formgroup">
+			<label asp-for="BlogImageUrl">Blog Image Url</label>
+			<input asp-for="BlogImageUrl" type="url" placeholder="Put a stunning image(URL)">
+			<span asp-validation-for="BlogImageUrl" class="text-danger"></span>
+		</div>
+		<div class="formgroup">
+			<label asp-for="BlogType" class="control-label">Choose your blog type</label>
+			<select asp-for="BlogType">
+				<option value="public" selected>Public</option>
+				<option value="private">Private</option>
+			</select>
+			<span asp-validation-for="BlogType" class="text-danger"></span>
+		</div>
+		<div class="formgroup">
+			<label asp-for="BlogTopic">Keyword</label>
+			<input asp-for="BlogTopic" placeholder="Drop Some keywords(comma seperated)">
+			<span asp-validation-for="BlogTopic" class="text-danger"></span>
+		</div>
+		<div class="formgroup">
+			<label asp-for="BlogReadtime">Blog Read Time(In minutes)</label>
+			<input asp-for="BlogReadtime" placeholder="Estemated time to read your blog">
+			<span asp-validation-for="BlogReadtime" class="text-danger"></span>
+		</div>
+
+
+		<div class="formgroup">
+			<input type="submit" value="Save Blog Data">
+		</div>
+
+	</form>
 </div>
+
+@section Scripts{
+	@{
+		<partial name="_ValidationScriptsPartial" />
+	}
+}
+

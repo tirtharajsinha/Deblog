@@ -50,6 +50,10 @@ namespace Deblog.Controllers
 			TempData["userimage"] = UserObj.ImageUrl;
 			TempData["username"] = _userName;
 
+			
+
+
+
 			return View();
 		}
 
