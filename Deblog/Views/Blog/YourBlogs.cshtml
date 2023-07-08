@@ -22,8 +22,18 @@
 			.trendblog .author .state{
 				background: var(--accent-color);
 			}
-			.trendblog .author .type{
+
+			.trendblog .author .draft{
+				background: var(--nord8);
+			}
+
+
+			.trendblog .author .type-public{
 				background: var(--text-accent-color);
+			}
+
+			.trendblog .author .type-private {
+				background: tomato;
 			}
 
 
@@ -91,9 +101,9 @@
 								}
 								else
 								{
-									<span class="state">Draft</span>
+									<span class="state draft">Draft</span>
 								}
-								<span class="type">@blog.BlogType</span>
+								<span class="type-@blog.BlogType">@blog.BlogType</span>
 							</div>
 							<div class="title">
 								<a asp-action="Index" asp-controller="Blog" asp-route-id=@blog.Id>@blog.BlogTitle</a>

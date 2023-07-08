@@ -16,3 +16,12 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.danger {
+    color: tomato !important;
+}
+
+.danger-bg {
+    background: tomato !important;
+    color: white !important;
+}

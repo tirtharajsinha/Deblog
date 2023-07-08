@@ -139,3 +139,62 @@
         font-size: 1.8rem;
     }
 }
+
+.authorimage {
+    position: relative;
+    height: 50px;
+}
+
+
+
+.authorcard{
+    position:absolute;
+    z-index:10;
+    top:50px;
+    right:-120px;
+    display:none;
+    flex-direction:column;
+    padding:20px;
+    background:white;
+    border:1px solid rgba(0,0,0,0.3);
+    border-radius:10px;
+    width:300px;
+    gap:10px;
+    transition-delay:2s;
+}
+
+.authorblock .authorcardtitle{
+    display:flex;
+    align-items:center;
+    
+}
+
+.authorblock .authorcardtitle img{
+    margin-right:20px;
+    width:30px;
+    height:30px;
+}
+
+.authorblock .authorcardtitle span{
+    font-size:18px;
+}
+
+.bio {
+    font-size: 14px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(0,0,0,0.3);
+}
+
+.blogscount {
+    width: 100%;
+    background: #79a86661;
+    font-size: 14px;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+
+
+.authorimage:hover > .authorcard {
+    display: flex;
+}

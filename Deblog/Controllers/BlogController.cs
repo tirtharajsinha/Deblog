@@ -56,19 +56,62 @@ namespace Deblog.Controllers
 
 
 			Userdata AuthorData = _db.Userdata.FirstOrDefault(x => x.Id == obj.BlogAuthor);
+			int countAuthorBlogs = _db.Blogs
+				.Where(p => p.BlogAuthor == obj.BlogAuthor)
+				.Count();
 
 
-			if (obj == null)
+			if (obj == null && AuthorData==null)
 			{
 				TempData["Message"] = "This id does not Exist";
 				return NotFound("This id does not Exist");
 			}
 
-
-
+			if (countAuthorBlogs == 1)
+			{
+				TempData["AuthorBlogCount"] = $"{countAuthorBlogs} blog.";
+			}
+			else
+			{
+				TempData["AuthorBlogCount"] = $"{countAuthorBlogs} blogs.";
+			}
+			
 			var data = new Tuple<Blog, Userdata>(obj, AuthorData);
 
 			return View("viewblog", data);
+		}
+
+		public IActionResult SearchBlogs()
+		{
+			string query = HttpContext.Request.Query["query"];
+			if(query == null || query=="")
+			{
+				return Json(null);
+			}
+
+			var objCategoryList = _db.Blogs
+				.Where(p => p.BlogType.Equals("public") && p.BlogStatus)
+				.Where(p => p.BlogTitle.StartsWith(query))
+				.OrderByDescending(m => m.BlogDatetime)
+				.Select(t => new { t.Id, t.BlogTitle })
+				.ToList();
+
+			var objCategoryListContains = _db.Blogs
+				.Where(p => p.BlogType.Equals("public") && p.BlogStatus)
+				.Where(p => !p.BlogTitle.StartsWith(query) && p.BlogTitle.Contains(query))
+				.OrderByDescending(m => m.BlogDatetime)
+				.Select(t => new {t.Id, t.BlogTitle})
+				.ToList();
+
+			objCategoryList.AddRange(objCategoryListContains);
+
+			if(objCategoryList.Count > 5)
+			{
+				objCategoryList = objCategoryList.GetRange(0, 6);
+			}
+			
+
+			return Json(objCategoryList);
 		}
 
 
@@ -148,7 +191,7 @@ namespace Deblog.Controllers
 
 				_db.Blogs.Update(obj);
 				_db.SaveChanges();
-				return RedirectToAction("Index", "User");
+				return RedirectToAction("BlogWriter", "Blog", new { id = obj.Id });
 			}
 
 			return View(obj);
@@ -159,6 +202,7 @@ namespace Deblog.Controllers
 		public IActionResult BlogWriter(int id)
 		{
 			var _userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+			
 
 			Blog obj = _db.Blogs.FirstOrDefault(x => x.Id == id);
 

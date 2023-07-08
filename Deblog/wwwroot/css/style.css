@@ -93,7 +93,7 @@ nav {
         align-items: center;
         justify-content: right;
         gap: 15px;
-        z-index:5;
+        z-index: 5;
     }
 
         nav .navelements a {
@@ -141,7 +141,7 @@ nav {
     align-items: center;
     padding: 0 10%;
     padding-top: 50px;
-    position:relative;
+    position: relative;
 }
 
     .banner .tagline {
@@ -194,12 +194,13 @@ nav {
 .content {
     width: 100%;
     margin-top: 60px;
-    min-height:100vh;
+    min-height: 100vh;
 }
 
 .container {
     padding: 0 10%;
     margin-bottom: 100px;
+    position: relative;
 }
 
     .container .trending {
@@ -210,6 +211,86 @@ nav {
     .container h4 i {
         margin-right: 10px;
     }
+
+
+
+.searchbar {
+    width: 100%;
+    max-width: 500px;
+    border: 1px solid var(--text-accent-color);
+    border-radius: 20px;
+    position: absolute;
+    background: white;
+    z-index: 5;
+}
+
+    .searchbar .searchbox {
+        width: 100%;
+        display: flex;
+        gap: 10px;
+        justify-content: left;
+        align-items: center;
+        font-size: 18px;
+        color: var(--text-accent-color);
+        padding: 0 20px;
+        overflow: hidden;
+    }
+
+        .searchbar .searchbox i {
+            margin-top: 4px;
+        }
+
+        .searchbar .searchbox input {
+            padding: 0 5px;
+            border: none;
+            outline: none;
+            font-size: 18px;
+            margin: 7px 0;
+            width: calc(100% - 50px);
+        }
+
+        .searchbar .searchbox .clr-search {
+            cursor: pointer;
+            display: none;
+        }
+
+
+    .searchbar .suggetionbox {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+
+        .searchbar .suggetionbox a {
+            width: calc(100% - 20px);
+            text-decoration: none;
+            padding: 7px 0pc 7px 40px;
+            font-size: 16px;
+            color: var(--text-accent-color);
+            font-weight: 500;
+            border: 2px solid rgba(0,0,0,0);
+            border-radius: 15px;
+            transition: all 0.2s ease-in;
+        }
+
+
+
+            .searchbar .suggetionbox a:last-child {
+                margin-bottom: 10px;
+            }
+
+            .searchbar .suggetionbox a:first-child {
+                margin-top: 10px;
+            }
+
+            .searchbar .suggetionbox a:hover {
+                border: 2px solid var(--accent-color);
+            }
+
+
+
 
 .trends {
     display: grid;
@@ -222,6 +303,8 @@ nav {
 }
 
 .trendblog {
+    text-decoration: none;
+    color: var(--text-accent-color);
     height: 130px;
     /* border: 1px solid var(--text-accent-color); */
     display: flex;
@@ -305,6 +388,8 @@ nav {
 .blog {
     display: flex;
     gap: 30px;
+    text-decoration: none;
+    color: var(--text-accent-color);
 }
 
     .blog .blogimg {
@@ -426,8 +511,9 @@ nav {
     .container {
         padding: 0 20px;
     }
+
     .curvehex img {
-        width:80vh;
+        width: 80vh;
     }
 }
 
@@ -441,6 +527,7 @@ nav {
     .blog .trendblog .otherdata {
         font-size: 14px;
     }
+
     .curvehex img {
         width: 50vh;
     }
@@ -486,7 +573,7 @@ nav {
     right: 0px;
     background-color: white;
     width: 250px;
-    z-index:10;
+    z-index: 10;
 }
 
     .navmenu .sep {
@@ -504,23 +591,20 @@ nav .navelements .navmenu a {
     word-break: keep-all;
 }
 
-nav .navelements .navmenu a:not(.danger):hover {
-    color: var(--accent-color);
-    
-}
+    nav .navelements .navmenu a:not(.danger):hover {
+        color: var(--accent-color);
+    }
 
 nav .navelements .navmenu .danger {
-    color:tomato;
+    color: tomato;
 }
 
 .showmenu {
     display: flex;
 }
+
 @media screen and (max-width: 480px) {
     .myblogimg {
         height: 100px;
     }
 }
-
-
-

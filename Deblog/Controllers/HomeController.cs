@@ -4,6 +4,7 @@ using Deblog.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using System.Security.Claims;
 
 namespace Deblog.Controllers
 {
@@ -26,6 +27,7 @@ namespace Deblog.Controllers
 		public IActionResult Index()
 		{
 			List<Blog> objCategoryList = _db.Blogs
+				.Where(p => p.BlogType.Equals("public") && p.BlogStatus)
 				.OrderByDescending(m => m.BlogDatetime)
 				.ToList();
 
@@ -42,7 +44,13 @@ namespace Deblog.Controllers
 
 			if (User.Identity.IsAuthenticated)
 			{
-				return View("IndexAuthenticated",data);
+				var _userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+				Userdata UserObj = _db.Userdata.FirstOrDefault(x => x.Id == _userId);
+				if (UserObj == null)
+				{
+					return RedirectToAction("Settings", "User");
+				}
+				return View("IndexAuthenticated", data);
 			}
 			return View(data);
 		}

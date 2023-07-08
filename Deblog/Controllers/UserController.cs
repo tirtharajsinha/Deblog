@@ -25,47 +25,29 @@ namespace Deblog.Controllers
 		}
 		public IActionResult Index()
 		{
-            var _userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            var _userName = User.FindFirst(ClaimTypes.Name).Value;
-
-            Userdata UserObj = _db.Userdata.FirstOrDefault(x => x.Id == _userId);
-
-			if (UserObj == null )
-			{
-				Userdata newuser = new Userdata();
-				newuser.Id = _userId;
-				newuser.Username = _userName;
-				newuser.DOJ = DateTime.Now;
-				newuser.Fullname = _userName;
-				newuser.UserDesc = "Hi there, nice to meet you.";
-				newuser.ImageUrl = "/images/users.png";
-
-				_db.Userdata.Add(newuser);
-				_db.SaveChanges();
-
-				return RedirectToAction("Settings");
-			}
-
-			TempData["fullname"] = UserObj.Fullname;
-			TempData["userimage"] = UserObj.ImageUrl;
-			TempData["username"] = _userName;
-
-			
-
-
-
-			return View();
+			return RedirectToAction("Settings");
 		}
 
 		public IActionResult Settings()
 		{
             var _userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
             var _userName = User.FindFirst(ClaimTypes.Name).Value;
+			var _userEmail = User.FindFirst(ClaimTypes.Email).Value;
+			
 
-            Userdata UserObj = _db.Userdata.FirstOrDefault(x => x.Id == _userId);
+			Userdata UserObj = _db.Userdata.FirstOrDefault(x => x.Id == _userId);
 			if (UserObj == null)
-			{ 
-				return RedirectToAction("Index");
+			{
+				UserObj = new Userdata();
+				UserObj.Id = _userId;
+				UserObj.Username = _userName;
+				UserObj.DOJ = DateTime.Now;
+				UserObj.Fullname = _userName;
+				UserObj.UserDesc = "Hi there, nice to meet you.";
+				UserObj.ImageUrl = "/images/users.png";
+
+				_db.Userdata.Add(UserObj);
+				_db.SaveChanges();
 			}
 
             Userform formObj = new Userform();
@@ -73,6 +55,8 @@ namespace Deblog.Controllers
 			formObj.Fullname = UserObj.Fullname;
 			formObj.UserDesc= UserObj.UserDesc;
 			TempData["userimage"] = UserObj.ImageUrl;
+			TempData["username"] = _userName;
+			TempData["useremail"] = _userEmail;
 			return View(formObj);
 		}
 
@@ -122,7 +106,7 @@ namespace Deblog.Controllers
 				_db.Userdata.Update(UserObj);
 				_db.SaveChanges();
 
-				return RedirectToAction("Index");
+				return RedirectToAction("Settings");
 			}
             TempData["userimage"] = UserObj.ImageUrl;
             return View(obj);

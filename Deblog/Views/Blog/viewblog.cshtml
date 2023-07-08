@@ -37,7 +37,17 @@
 		<div class="titleblock">
 			<h1 class="blogtitle">@Model.Item1.BlogTitle</h1>
 			<div class="authorblock">
-				<img src="@Model.Item2.ImageUrl" />
+				<div class="authorimage">
+					<img src="@Model.Item2.ImageUrl" />
+					<div class="authorcard">
+						<div class="authorcardtitle">
+							<img src="@Model.Item2.ImageUrl" />
+							<span class="authorname">@Model.Item2.Fullname</span>
+						</div>
+						<div class="bio">@Model.Item2.UserDesc</div>
+						<div class="blogscount">Author of @TempData["AuthorBlogCount"]</div>
+					</div>
+				</div>
 				<div class="authordetail">
 					<div>
 						<span class="authorname">@Model.Item2.Fullname</span>
@@ -80,7 +90,7 @@
 
 				</div>
 			</div>
-			<img src="@Model.Item1.BlogImageUrl" alt="" class="titleimage"/>
+			<img src="@Model.Item1.BlogImageUrl" alt="" class="titleimage" />
 
 
 		</div>
@@ -119,13 +129,13 @@
 		function bookmark() {
 			let ele = document.querySelector(".save");
 			//ele.innerHTML = `<i class="fad fa - spinner fa - spin"></i>`;
-			
-			$.get(`/Blog/Bookmark/`,{id:@Model.Item1.Id})
+
+			$.get(`/Blog/Bookmark/`, { id: @Model.Item1.Id})
 				.done(function (data) {
 					console.log(data);
 					if (data["state"]) {
 						//bookmarked
-						
+
 						ele.innerHTML = `<i class="fad fa-bookmark"></i>`;
 					}
 					else {

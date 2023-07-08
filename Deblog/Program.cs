@@ -73,3 +73,7 @@ app.MapControllerRoute(
 app.MapRazorPages();
 
 app.Run();
+
+
+// Username - tirtharajsinha
+// password - TcFgVHtWu5nRG6!

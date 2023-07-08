@@ -21,7 +21,7 @@
 		</a>
 		<div class="navelements">
 			<a asp-action="NewBlog" asp-controller="Blog" class="lse">Write</a>
-			<a asp-action="NewBlog" asp-controller="Blog" class="lse"><i class="fal fa-bell"></i></a>
+			<a href="#" class="lse"><i class="fal fa-bell"></i></a>
 			<partial name="_LoginPartial.cshtml" />
 		</div>
 		<div class="curvehex">
@@ -41,6 +41,7 @@
 	</div>
 
 	<script src="~/js/fontawasome5.15-pro.js"></script>
+	<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.2/jquery.min.js'></script>
 	<script src="~/js/index.js"></script>
 	@await RenderSectionAsync("Scripts", required: false)
 </body>

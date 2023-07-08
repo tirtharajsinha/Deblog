@@ -22,33 +22,36 @@
 
 			@foreach (Blog blog in topblogs)
 			{
-				<div class="trendblog">
-					<div class="author">
-						<img src="@Model.Item2[@blog.BlogAuthor].ImageUrl" alt="">
-						<span>@Model.Item2[@blog.BlogAuthor].Fullname</span>
-					</div>
-					<div class="title">
-						@blog.BlogTitle
-					</div>
-					<div class="otherdata">
-						<div>
-							@if (blog.BlogDatetime.Year == DateTime.Now.Year)
-							{
-								<span>@blog.BlogDatetime.ToString("MMM dd")</span>
-							}
-							else
-							{
-								<span>@blog.BlogDatetime.ToString("MMM dd, yyyy")</span>
-							}
+				@if (@Model.Item2.ContainsKey(@blog.BlogAuthor))
+				{
+					<a asp-action="Index" asp-controller="Blog" asp-route-id=@blog.Id class="trendblog">
+						<div class="author">
+							<img src="@Model.Item2[@blog.BlogAuthor].ImageUrl" alt="">
+							<span>@Model.Item2[@blog.BlogAuthor].Fullname</span>
 						</div>
-						<span>·</span>
-						<div>@blog.BlogReadtime</div>
-					</div>
-					@{
-						trendcount++;
-					}
-					<span class="numbering">@trendcount</span>
-				</div>
+						<div class="title">
+							@blog.BlogTitle
+						</div>
+						<div class="otherdata">
+							<div>
+								@if (blog.BlogDatetime.Year == DateTime.Now.Year)
+								{
+									<span>@blog.BlogDatetime.ToString("MMM dd")</span>
+								}
+								else
+								{
+									<span>@blog.BlogDatetime.ToString("MMM dd, yyyy")</span>
+								}
+							</div>
+							<span>·</span>
+							<div>@blog.BlogReadtime</div>
+						</div>
+						@{
+							trendcount++;
+						}
+						<span class="numbering">@trendcount</span>
+					</a>
+				}
 			}
 		</div>
 	</div>
@@ -68,34 +71,37 @@
 			<div class="blogs">
 				@foreach (Blog blog in Model.Item1)
 				{
-					<div class="blog">
-						<img class="mse blogimg" src="@blog.BlogImageUrl" alt="">
-						<div class="trendblog">
-							<div class="author">
-								<img src="@Model.Item2[@blog.BlogAuthor].ImageUrl" alt="">
-								<span>@Model.Item2[@blog.BlogAuthor].Fullname</span>
-							</div>
-							<div class="title">
-								@blog.BlogTitle
-							</div>
-							<div class="otherdata">
-								<div>
-									@if (blog.BlogDatetime.Year == DateTime.Now.Year)
-									{
-										<span>@blog.BlogDatetime.ToString("MMM dd")</span>
-									}
-									else
-									{
-										<span>@blog.BlogDatetime.ToString("MMM dd, yyyy")</span>
-									}
+					@if (@Model.Item2.ContainsKey(@blog.BlogAuthor))
+					{
+						<a asp-action="Index" asp-controller="Blog" asp-route-id=@blog.Id class="blog">
+							<img class="mse blogimg" src="@blog.BlogImageUrl" alt="">
+							<div class="trendblog">
+								<div class="author">
+									<img src="@Model.Item2[@blog.BlogAuthor].ImageUrl" alt="">
+									<span>@Model.Item2[@blog.BlogAuthor].Fullname</span>
 								</div>
-								<span>·</span>
-								<div>@blog.BlogReadtime Min</div>
+								<div class="title">
+									@blog.BlogTitle
+								</div>
+								<div class="otherdata">
+									<div>
+										@if (blog.BlogDatetime.Year == DateTime.Now.Year)
+										{
+											<span>@blog.BlogDatetime.ToString("MMM dd")</span>
+										}
+										else
+										{
+											<span>@blog.BlogDatetime.ToString("MMM dd, yyyy")</span>
+										}
+									</div>
+									<span>·</span>
+									<div>@blog.BlogReadtime Min</div>
 
+								</div>
 							</div>
-						</div>
-						
-					</div>
+
+						</a>
+					}
 				}
 			</div>
 		</div>

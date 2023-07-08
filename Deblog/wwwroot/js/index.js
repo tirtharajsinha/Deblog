@@ -6,7 +6,6 @@ document.querySelector(".dpbutton").addEventListener("click", (e) => {
 })
 
 document.querySelector(".content").addEventListener("click", (e) => {
-    console.log("Hi");
     if (menustate) {
         document.querySelector(".navmenu").classList.remove("showmenu");
         menustate = false;

@@ -13,13 +13,27 @@
 
 @section AddToHead{
 	<style>
-		.container{
-			margin-top:100px;
+		.container {
+			margin-top: 100px;
+		}
+
+		.readmore {
+			padding-top: 100px;
 		}
 	</style>
 }
 
+
+
 <div class="container">
+	<div class="searchbar">
+		<div class="searchbox">
+			<i class="fal fa-search"></i>
+			<input type="text" id="searchinput" autocomplete="off" />
+			<i class="fal fa-times clr-search"></i>
+		</div>
+		<div class="suggetionbox"></div>
+	</div>
 	<div class="readmore">
 		<div class="trendingtopics">
 			<h4><i class="fal fa-hands-helping"></i> You want it, you get it.</h4>
@@ -34,34 +48,39 @@
 			<div class="blogs">
 				@foreach (Blog blog in topblogs)
 				{
-					<div class="blog">
-						<img class="mse blogimg" src="@blog.BlogImageUrl" alt="">
-						<div class="trendblog">
-							<div class="author">
-								<img src="@Model.Item2[@blog.BlogAuthor].ImageUrl" alt="">
-								<span>@Model.Item2[@blog.BlogAuthor].Fullname</span>
-							</div>
-							<div class="title">
-								@blog.BlogTitle
-							</div>
-							<div class="otherdata">
-								<div>
-									@if (blog.BlogDatetime.Year == DateTime.Now.Year)
-									{
-										<span>@blog.BlogDatetime.ToString("MMM dd")</span>
-									}
-									else
-									{
-										<span>@blog.BlogDatetime.ToString("MMM dd, yyyy")</span>
-									}
+					@if (@Model.Item2.ContainsKey(@blog.BlogAuthor))
+					{
+
+
+						<a asp-action="Index" asp-controller="Blog" asp-route-id=@blog.Id class="blog">
+							<img class="mse blogimg" src="@blog.BlogImageUrl" alt="">
+							<div class="trendblog">
+								<div class="author">
+									<img src="@Model.Item2[@blog.BlogAuthor].ImageUrl" alt="">
+									<span>@Model.Item2[@blog.BlogAuthor].Fullname</span>
 								</div>
-								<span>·</span>
-								<div>@blog.BlogReadtime Min</div>
+								<div class="title">
+									@blog.BlogTitle
+								</div>
+								<div class="otherdata">
+									<div>
+										@if (blog.BlogDatetime.Year == DateTime.Now.Year)
+										{
+											<span>@blog.BlogDatetime.ToString("MMM dd")</span>
+										}
+										else
+										{
+											<span>@blog.BlogDatetime.ToString("MMM dd, yyyy")</span>
+										}
+									</div>
+									<span>·</span>
+									<div>@blog.BlogReadtime Min</div>
 
+								</div>
 							</div>
-						</div>
 
-					</div>
+						</a>
+					}
 				}
 			</div>
 		</div>
@@ -70,16 +89,57 @@
 
 
 <script>
-	document.addEventListener("scroll", (event) => {
-		lastKnownScrollPosition = window.scrollY;
-		let accentcolor = getComputedStyle(document.documentElement)
-			.getPropertyValue('--accent-color');
-		if (lastKnownScrollPosition > 400) {
-			document.querySelector("nav").style.background = "#ffffff";
-		} else {
-			document.querySelector("nav").style.background = accentcolor;
+	//document.addEventListener("scroll", (event) => {
+	//	lastKnownScrollPosition = window.scrollY;
+	//	let accentcolor = getComputedStyle(document.documentElement)
+	//		.getPropertyValue('--accent-color');
+	//	if (lastKnownScrollPosition > 400) {
+	//		document.querySelector("nav").style.background = "#ffffff";
+	//	} else {
+	//		document.querySelector("nav").style.background = accentcolor;
+	//	}
+	//});
+
+	document.getElementById("searchinput").addEventListener("input", (e) => {
+		fetchSugg(e.target.value);
+	})
+
+	document.querySelector(".clr-search").addEventListener("click", (e) => {
+		document.getElementById("searchinput").value = "";
+		document.querySelector(".suggetionbox").innerHTML = "";
+	})
+
+	function fetchSugg(query) {
+		if (query == "") {
+			document.querySelector(".clr-search").style.display = "none";
+			document.querySelector(".suggetionbox").innerHTML = "";
+			return;
 		}
-	});
+		else {
+			document.querySelector(".clr-search").style.display = "block";
+		}
+		let source = document.getElementById("searchinput")
+		let target = document.querySelector(".suggetionbox");
+		$.get("/Blog/SearchBlogs",
+			{
+				query: query,
+			})
+			.done(function (data) {
+				console.log(data);
+				if (data.length > 0 && source != "") {
+					var suggs = "";
+
+					data.forEach((item, index, arr) => {
+						suggs += `<a href="/Blog/Index/${item["id"]}">${item["blogTitle"]}</a>`
+					})
+
+					target.innerHTML = suggs;
+				}
+				else {
+					target.innerHTML = "";
+				}
+			});
+	}
 
 
 

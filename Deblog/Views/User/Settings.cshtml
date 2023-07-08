@@ -1,44 +1,141 @@
 ﻿@model Deblog.Models.Userform
 
 @{
-    ViewData["Title"] = "Settings";
+	ViewData["Title"] = "Settings";
 }
 
-<h1>Settings</h1>
+@section AddToHead{
+	<link href="@Url.Content("~/css/settings.css")" rel="stylesheet" type="text/css" />
+	
+}
 
-<h4>Userform</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Settings" enctype="multipart/form-data" method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
+<div class="container">
+	<h1>Settings</h1>
+	<div class="setnav">
+		<a href="#" class="setactive">Account</a>
+		<a href="#">Publishing</a>
+		<a href="#">Notifications</a>
+		<a href="#">Security and Apps</a>
+	</div>
+	<div class="profile">
+		<div class="row">
+			<div>Email Address</div>
+			<div>@TempData["useremail"]</div>
+		</div>
+		<div class="row">
+			<div>Username</div>
+			<div><i class="fal fa-at"></i>@TempData["username"]</div>
+		</div>
+		<div class="row info">
+			<div>
+				Profile Information
+				<br><span class="mse">Edit you name, photo, bio etc.</span>
+			</div>
+			<div id="userformbtn">
+				<img src="@TempData["userimage"]" alt="">
+				<div>@Model.Fullname</div>
+			</div>
+		</div>
 
-            <img src="@TempData["userimage"]" width="200px" height="auto"/>
+		<div class="row">
+			<div>Profile Design</div>
+			<div style="transform: rotate(45deg); font-size: 20px;"><i class="fal fa-long-arrow-up"></i></div>
+		</div>
 
-            <div class="mb-3">
-                <label asp-for="Image" class="form-label">Profile Picture</label>
-                <input class="form-control" asp-for="Image" type="file" accept="image/x-png,image/jpg,image/jpeg">
-            </div>
+		<div class="row">
+			<div>Parential Rules</div>
+			<div><i class="fal fa-user-shield"></i></div>
+		</div>
 
-            <div class="form-group">
-                <label asp-for="Fullname" class="control-label"></label>
-                <input asp-for="Fullname" class="form-control" />
-                <span asp-validation-for="Fullname" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="UserDesc" class="control-label"></label>
-                <input asp-for="UserDesc" class="form-control" />
-                <span asp-validation-for="UserDesc" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
+		<hr>
+
+		<div class="row">
+			<div>Followed Writters</div>
+			<div><i class="fal fa-user-plus"></i></div>
+		</div>
+		<div class="row">
+			<div>Blocked</div>
+			<div><i class="fal fa-shield-alt"></i></div>
+		</div>
+
+		<hr>
+
+		<div class="row  row-danger">
+			<div>
+				Deactivate Account
+				<br><span class="mse">Deactivate/suspend your account</span>
+			</div>
+
+			<div></div>
+
+		</div>
+		<div class="row row-danger">
+			<div>
+				Delete Account
+				<br><span class="mse">Permanently delete your account and all of your content.</span>
+			</div>
+			<div></div>
+		</div>
+
+
+
+
+
+	</div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to Dashboard</a>
+
+
+<div class="overlayform">
+	<form asp-action="Settings" enctype="multipart/form-data" method="post" class="userform">
+		<div class="closeformbtn"><i class="fal fa-times"></i></div>
+		<input type="hidden" asp-for="Id" />
+		<div class="imagebox">
+			<label asp-for="Image">
+				<img src="@TempData["userimage"]" alt="" id="imagefield">
+				<div><span><i class="fal fa-images"></i></span></div>
+			</label>
+			<input type="file" asp-for="Image" accept="image/x-png,image/jpg,image/jpeg" hidden>
+		</div>
+		<div class="formgroup">
+			<label>Fullname</label>
+			<input asp-for="Fullname" placeholder="Drop your fullname" required>
+			<span asp-validation-for="Fullname" class="text-danger"></span>
+		</div>
+
+		<div class="formgroup">
+			<label asp-for="UserDesc">Bio</label>
+			<textarea asp-for="UserDesc" placeholder="Let every one know something about you."></textarea>
+			<span asp-validation-for="UserDesc" class="text-danger"></span>
+		</div>
+		<div class="formgroup">
+			<input type="submit" value="SAVE">
+		</div>
+	</form>
 </div>
 
+
+<script>
+	document.getElementById("userformbtn").addEventListener("click", (e) => {
+		document.querySelector(".overlayform").style.display = "flex";
+	})
+
+	document.querySelector(".closeformbtn").addEventListener("click", (e) => {
+		document.querySelector(".overlayform").style.display = "none";
+	})
+
+	document.getElementById("Image").addEventListener("change", (e) => {
+		readURL(e.target);
+	})
+
+
+	function readURL(input) {
+		if (input.files && input.files[0]) {
+			var reader = new FileReader();
+			reader.onload = function (e) {
+				document.getElementById("imagefield").src = e.target.result;
+			};
+			reader.readAsDataURL(input.files[0]);
+		}
+	}
+</script>

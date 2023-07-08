@@ -137,6 +137,7 @@ body {
 .metadata a{
     text-decoration:none;
     color:#000;
+    position:relative;
 }
     .metadata i {
         font-size: 18px;
@@ -151,4 +152,35 @@ body {
         align-items: center;
     }
 
-    
+
+.metadata a[data-title]:hover::after {
+    content: attr(data-title);
+    position: absolute;
+    top: 0;
+    left: 35px;
+    background:white;
+    padding:7px 10px;
+    border-radius:7px;
+    white-space:nowrap;
+    word-break:keep-all;
+    border:1px solid rgba(0,0,0,0.3);
+  }
+
+
+.danger {
+    color: tomato !important;
+}
+
+.danger-bg {
+    background: tomato !important;
+    color: white !important;
+}
+
+.success {
+    color: #79a866 !important;
+}
+
+.success-bg {
+    background: #79a866 !important;
+    color:white !important;
+}
