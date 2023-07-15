@@ -198,3 +198,10 @@
 .authorimage:hover > .authorcard {
     display: flex;
 }
+
+
+@media print {
+    .no-print {
+        display: none
+    }
+}
