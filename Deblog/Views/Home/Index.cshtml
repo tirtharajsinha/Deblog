@@ -74,7 +74,7 @@
 					@if (@Model.Item2.ContainsKey(@blog.BlogAuthor))
 					{
 						<a asp-action="Index" asp-controller="Blog" asp-route-id=@blog.Id class="blog">
-							<img class="mse blogimg" src="@blog.BlogImageUrl" alt="">
+							<img class="mse blogimg" src="@blog.BlogImageUrl" onerror="this.src='/Images/standbyBlogImage.png'">
 							<div class="trendblog">
 								<div class="author">
 									<img src="@Model.Item2[@blog.BlogAuthor].ImageUrl" alt="">
